@@ -1,0 +1,130 @@
+import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
+import { getFormatter, getTranslations } from 'next-intl/server';
+
+import { ProductsListSection } from '@/vibes/soul/sections/products-list-section';
+import { EmptySearch } from '~/components/empty-search';
+import { facetsTransformer } from '~/data-transformers/facets-transformer';
+import { pricesTransformer } from '~/data-transformers/prices-transformer';
+
+import { redirectToCompare } from '../_actions/redirect-to-compare';
+import { fetchFacetedSearch } from '../fetch-faceted-search';
+
+import { getCompareProducts } from './page-data';
+
+export async function generateMetadata() {
+  const t = await getTranslations('Search');
+
+  return {
+    title: t('title'),
+  };
+}
+
+interface Props {
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+export default async function Search({ searchParams }: Props) {
+  const t = await getTranslations('Search');
+  const f = await getTranslations('FacetedGroup');
+
+  const format = await getFormatter();
+
+  const searchTerm = typeof searchParams.term === 'string' ? searchParams.term : undefined;
+
+  if (!searchTerm) {
+    return <EmptySearch />;
+  }
+
+  const search = await fetchFacetedSearch({ ...searchParams });
+
+  const productsCollection = search.products;
+  const products = productsCollection.items.map((product) => ({
+    id: product.entityId.toString(),
+    title: product.name,
+    href: product.path,
+    image: product.defaultImage
+      ? { src: product.defaultImage.url, alt: product.defaultImage.altText }
+      : undefined,
+    price: pricesTransformer(product.prices, format),
+    subtitle: product.brand?.name ?? undefined,
+  }));
+
+  if (products.length === 0) {
+    return <EmptySearch searchTerm={searchTerm} />;
+  }
+
+  const totalProducts = productsCollection.collectionInfo?.totalItems ?? 0;
+
+  // TODO: remove hasNextPage and hasPreviousPage from query
+  const { endCursor, startCursor, hasNextPage, hasPreviousPage } = productsCollection.pageInfo;
+
+  const facets = search.facets.items;
+  const filters = await facetsTransformer(facets);
+
+  const compare = searchParams.compare;
+
+  const compareProducts =
+    typeof compare === 'string'
+      ? getCompareProducts({ entityIds: compare.split(',').map((id) => Number(id)) }).then((data) =>
+          removeEdgesAndNodes(data.products).map((product) => ({
+            id: product.entityId.toString(),
+            title: product.name,
+            href: product.path,
+            image: product.defaultImage
+              ? { src: product.defaultImage.url, alt: product.defaultImage.altText }
+              : undefined,
+          })),
+        )
+      : [];
+
+  return (
+    <ProductsListSection
+      compareAction={redirectToCompare}
+      compareLabel={f('compare')}
+      compareParamName="compare"
+      compareProducts={compareProducts}
+      filterLabel={f('FacetedSearch.filters')}
+      filters={filters.filter((filter) => !!filter)}
+      paginationInfo={
+        hasNextPage || hasPreviousPage
+          ? {
+              startCursorParamName: 'before',
+              endCursorParamName: 'after',
+              endCursor: hasNextPage ? endCursor : null,
+              startCursor: hasPreviousPage ? startCursor : null,
+            }
+          : undefined
+      }
+      products={products}
+      sortLabel={f('SortBy.label')}
+      sortOptions={[
+        { value: 'featured', label: f('SortBy.featuredItems') },
+        { value: 'newest', label: f('SortBy.newestItems') },
+        {
+          value: 'best_selling',
+          label: f('SortBy.bestSellingItems'),
+        },
+        { value: 'a_to_z', label: f('SortBy.aToZ') },
+        { value: 'z_to_a', label: f('SortBy.zToA') },
+        {
+          value: 'best_reviewed',
+          label: f('SortBy.byReview'),
+        },
+        {
+          value: 'lowest_price',
+          label: f('SortBy.priceAscending'),
+        },
+        {
+          value: 'highest_price',
+          label: f('SortBy.priceDescending'),
+        },
+        { value: 'relevance', label: f('SortBy.relevance') },
+      ]}
+      sortParamName="sort"
+      title={`${t('searchResults')} "${searchTerm}"`}
+      totalCount={totalProducts}
+    />
+  );
+}
+
+export const runtime = 'edge';
