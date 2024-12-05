@@ -9,6 +9,12 @@ const getNextProductFaqs = async (
   limit: number,
   endCursor?: string | null
 ) => {
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  await sleep(2000);
+
   const response = await client.fetch({
     document: MetafieldsQuery,
     variables: {
