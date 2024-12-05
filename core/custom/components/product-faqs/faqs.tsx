@@ -2,6 +2,7 @@
 
 import { useState, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
+import { Accordion, Accordions } from '@/vibes/soul/primitives/accordions';
 
 import getNextProductFaqs from './_actions/get-next-product-faqs';
 import { formatFaqs } from './_data/component-data';
@@ -34,18 +35,13 @@ export const ProductFaqs = ({
 
         <div className="mx-auto md:w-2/3 p-4">
 
-        {faqs.map((faq) => (
-          <div className="my-4" key={faq.key}>
-            <div>
-              <label className="font-bold">Question:</label>
-              <span> {faq.question}</span>
-            </div>
-            <div>
-              <label className="font-bold">Answer:</label>
-              <span> {faq.answer}</span>
-            </div>
-          </div>
-        ))}
+          <Accordions type="multiple">
+            {faqs.map(faq => (
+              <Accordion key={faq.key} title={faq.question} value={faq.key}>
+                {faq.answer}
+              </Accordion>
+            ))}
+          </Accordions>
 
         </div>
       </div>
