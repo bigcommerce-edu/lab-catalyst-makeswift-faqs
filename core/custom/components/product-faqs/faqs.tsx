@@ -82,5 +82,11 @@ export const ProductFaqs = ({
 };
 
 export const ProductFaqsSkeleton = () => {
-  return '';
+  return (
+    <div className="animate-pulse mx-auto md:w-2/3 p-4 items-center">
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+    </div>
+  );
 };

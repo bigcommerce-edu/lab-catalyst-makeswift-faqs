@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 
 import { Field } from '@/vibes/soul/sections/product-detail/schema';
 import { ReviewsSkeleton } from '@/vibes/soul/sections/reviews';
-import { ProductFaqs } from '~/custom/components/product-faqs';
+import { ProductFaqs, ProductFaqsSkeleton } from '~/custom/components/product-faqs';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { LocaleType } from '~/i18n/routing';
 import { AccordionItem, ProductDescription } from '~/makeswift/components/product-description';
@@ -335,7 +335,9 @@ export default async function Product({ params: { locale, slug }, searchParams }
 
       <ProductSchema product={product} />
 
-      <ProductFaqs productId={product.entityId} productName={product.name} />
+      <Suspense fallback={<ProductFaqsSkeleton />}>
+        <ProductFaqs productId={product.entityId} productName={product.name} />
+      </Suspense>
 
       <Suspense fallback={t('loading')}>
         <RelatedProducts productId={product.entityId} />

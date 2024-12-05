@@ -34,6 +34,12 @@ const getProductFaqMetafields = cache(
 );
 
 const ProductFaqs = async ({ productId, productName }: { productId: number, productName: string }) => {
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  await sleep(5000);
+  
   const faqCollection = await getProductFaqMetafields(productId);
 
   return <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
