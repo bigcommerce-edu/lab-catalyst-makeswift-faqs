@@ -4,6 +4,7 @@ import { useState, ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { Accordion, Accordions } from '@/vibes/soul/primitives/accordions';
 import { Button } from '@/vibes/soul/primitives/button';
+import { toast } from 'react-hot-toast';
 
 import getNextProductFaqs from './_actions/get-next-product-faqs';
 import { formatFaqs } from './_data/component-data';
@@ -46,7 +47,9 @@ export const ProductFaqs = ({
       setEndCursor(nextFaqData.endCursor);
       setMoreFaqs(moreFaqs.concat(nextFaqData.faqs));
     } catch (err) {
-      // Handle error
+      const error = err instanceof Error ? err.message : String(err);
+      
+      toast.error(error);
     }
 
     setPending(false);
