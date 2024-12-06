@@ -10,6 +10,9 @@ runtime.registerComponent(
     type: 'img-compare-slider',
     label: 'Image Compare Slider',
     props: {
+      className: Style({ 
+        properties: [Style.Width, Style.Margin, Style.Padding, Style.Border, Style.BorderRadius],
+      }),
       image1: Image({
         label: "Image 1",
         format: Image.Format.URL,
