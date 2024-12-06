@@ -22,6 +22,7 @@ import '~/makeswift/components/css-theme/register';
 import '~/makeswift/components/not-found/register';
 
 import '~/custom/components/image-compare-slider/register';
+import '~/custom/components/team-members/register';
 import '~/custom/components/product-faqs/register';
 
 import { MakeswiftComponentType } from '@makeswift/runtime';
