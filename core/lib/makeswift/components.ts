@@ -16,6 +16,7 @@ import './components/product-detail/register';
 import './components/site-theme/register';
 
 import '~/custom/components/image-compare-slider/register';
+import '~/custom/components/team-members/register';
 
 import { MakeswiftComponentType } from '@makeswift/runtime';
 
