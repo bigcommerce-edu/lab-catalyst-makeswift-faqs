@@ -21,6 +21,8 @@ import '~/makeswift/components/section-layout/section-layout.makeswift';
 import '~/makeswift/components/css-theme/register';
 import '~/makeswift/components/not-found/register';
 
+import '~/custom/components/image-compare-slider/register';
+
 import { MakeswiftComponentType } from '@makeswift/runtime';
 
 import { runtime } from './runtime';
