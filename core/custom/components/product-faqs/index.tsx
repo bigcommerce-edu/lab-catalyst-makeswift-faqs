@@ -15,21 +15,21 @@ const getProductFaqMetafields = cache(
   async (
     productId: number
   ) => {
-    const response = await client.fetch({
-      document: MetafieldsQuery,
-      variables: {
-        productId,
-        limit,
-      },
+    return Promise.resolve({
+      endCursor: '123',
+      faqs: [
+        {
+          key: 'q1',
+          question: 'Question 1',
+          answer: 'Answer 1',
+        },
+        {
+          key: 'q2',
+          question: 'Question 2',
+          answer: 'Answer 2',
+        }
+      ]
     });
-
-    const product = response.data.site.product;
-
-    if (!product?.metafields) {
-      return { endCursor: null, faqs: [] };
-    }
-
-    return formatFaqsCollection(product);
   }
 );
 

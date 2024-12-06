@@ -14,23 +14,22 @@ const getNextProductFaqs = async (
   }
 
   await sleep(2000);
-
-  const response = await client.fetch({
-    document: MetafieldsQuery,
-    variables: {
-      productId,
-      limit,
-      after: endCursor,
-    },
+  
+  return Promise.resolve({
+    endCursor: null,
+    faqs: [
+      {
+        key: 'q3',
+        question: 'Question 3',
+        answer: 'Answer 3',
+      },
+      {
+        key: 'q4',
+        question: 'Question 4',
+        answer: 'Answer 4',
+      }
+    ]
   });
-
-  const product = response.data.site.product;
-
-  if (!product?.metafields) {
-    return { endCursor: null, faqs: [] };
-  }
-
-  return formatFaqsCollection(product);
 };
 
 export default getNextProductFaqs;
