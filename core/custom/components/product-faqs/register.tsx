@@ -22,5 +22,6 @@ runtime.registerComponent(MakeswiftProductFaqs, {
       }),
       getItemLabel: (section) => section?.question || 'Question',
     }),
+    showOriginal: Checkbox({ label: 'Show metafields-based FAQs', defaultValue: true }),
   },
 });
