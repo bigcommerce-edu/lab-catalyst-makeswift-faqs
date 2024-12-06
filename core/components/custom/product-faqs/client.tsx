@@ -34,12 +34,14 @@ interface ProductFaq {
 
 interface ProductFaqsProps {
   faqs: ProductFaq[];
+  showOriginal: boolean;
 }
 
 export const MakeswiftProductFaqs = forwardRef(
   (
     {
       faqs,
+      showOriginal
     }: ProductFaqsProps,
     ref: Ref<HTMLDivElement>,
   ) => {
@@ -56,17 +58,17 @@ export const MakeswiftProductFaqs = forwardRef(
     );
 
     const allFaqs = formattedFaqs.concat(
-      passedFaqs
+      showOriginal ? passedFaqs : []
     );
 
     return (
       <div ref={ref}>
         <ProductFaqs 
           faqs={allFaqs} 
-          initialEndCursor={initialEndCursor}
+          initialEndCursor={showOriginal ? initialEndCursor : null}
           limit={limit} 
           productId={productId} 
-          showLoadMore={true} 
+          showLoadMore={showOriginal} 
           />
       </div>
     );
