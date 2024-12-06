@@ -28,6 +28,8 @@ export const ProductFaqsContextProvider = (
 interface ProductFaq {
   question: string;
   answer: string;
+  richContent: boolean;
+  content: ReactNode;
 }
 
 interface ProductFaqsProps {
@@ -48,7 +50,7 @@ export const MakeswiftProductFaqs = forwardRef(
         return {
           key: index.toString(),
           question: faq.question,
-          answer: faq.answer,
+          answer: (faq.richContent) ? faq.content : faq.answer,
         };
       }
     );

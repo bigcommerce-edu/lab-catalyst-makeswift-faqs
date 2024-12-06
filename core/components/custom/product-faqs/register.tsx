@@ -18,6 +18,8 @@ runtime.registerComponent(MakeswiftProductFaqs, {
         props: {
           question: TextInput({ label: 'Question', defaultValue: 'Question' }),
           answer: TextInput({ label: 'Answer', defaultValue: 'Answer' }),
+          richContent: Checkbox({ label: 'Use rich content slot', defaultValue: false }),
+          content: Slot(),
         },
       }),
       getItemLabel: (section) => section?.question || 'Question',
