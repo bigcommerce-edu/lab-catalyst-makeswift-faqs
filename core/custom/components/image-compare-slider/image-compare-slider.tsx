@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef, Ref } from 'react';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 interface Props {
 
@@ -14,7 +15,18 @@ export const ImageCompareSlider = forwardRef((
 ) => {
   return (
     <div ref={ref}>
-      Image Compare Slider
+      <ReactCompareSlider
+        itemOne={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+        itemTwo={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+      />
     </div>
   );
 });
