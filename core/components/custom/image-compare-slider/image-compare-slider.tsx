@@ -2,6 +2,7 @@
 
 import { clsx } from 'clsx';
 import { forwardRef, Ref } from 'react';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 interface Props {
 
@@ -20,7 +21,18 @@ export const ImageCompareSlider = forwardRef((
       )} 
       ref={ref}
     >
-      Image Compare Slider
+      <ReactCompareSlider
+        itemOne={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+        itemTwo={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+      />
     </div>
   );
 });
