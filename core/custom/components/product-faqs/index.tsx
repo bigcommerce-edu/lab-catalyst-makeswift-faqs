@@ -7,7 +7,7 @@ import { client } from '~/client';
 import { Stream } from '@/vibes/soul/lib/streamable';
 import { formatFaqsCollection, MetafieldsQuery } from './_data/component-data';
 import { ProductFaqsContextProvider } from './client';
-import { ProductFaqs as ProductFaqsComponent, ProductFaqsSkeleton } from './faqs';
+import { ProductFaqsSkeleton } from './faqs';
 import { COMPONENT_TYPE } from './register';
 
 const limit = 2;
@@ -41,15 +41,26 @@ const getProductFaqMetafields = cache(
 );
 
 const ProductFaqs = async ({ productId }: { productId: number }) => {
+  const snapshotPromise = getComponentSnapshot(`product-faqs-${productId}`);
   const faqCollectionPromise = getProductFaqMetafields(productId);
 
   return (
     <Stream fallback={<ProductFaqsSkeleton />} 
-      value={faqCollectionPromise}>
+      value={Promise.all([ snapshotPromise, faqCollectionPromise ])}>
 
-      {(faqCollection) => (
-        <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
-          limit={limit} productId={productId} />
+      {([ snapshot, faqCollection ]) => (
+        <ProductFaqsContextProvider value={{
+          productId,
+          limit,
+          faqs: faqCollection.faqs,
+          initialEndCursor: faqCollection.endCursor
+        }}>
+          <MakeswiftComponent
+            label={`FAQs for ${faqCollection.productName}`}
+            snapshot={snapshot}
+            type={COMPONENT_TYPE}
+          />
+        </ProductFaqsContextProvider>
       )}
 
     </Stream>
