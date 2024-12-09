@@ -20,6 +20,7 @@ import '~/makeswift/components/sticky-sidebar-layout/sticky-sidebar-layout.makes
 import '~/makeswift/components/section-layout/section-layout.makeswift';
 import '~/makeswift/components/css-theme/register';
 import '~/makeswift/components/not-found/register';
+import '~/custom/components/product-faqs/register';
 
 import '~/custom/components/image-compare-slider/register';
 import '~/custom/components/team-members/register';

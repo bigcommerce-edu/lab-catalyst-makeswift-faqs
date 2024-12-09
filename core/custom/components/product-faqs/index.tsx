@@ -6,7 +6,7 @@ import { client } from '~/client';
 
 import { formatFaqsCollection, MetafieldsQuery } from './_data/component-data';
 import { ProductFaqsContextProvider } from './client';
-import { ProductFaqs as ProductFaqsComponent, ProductFaqsSkeleton } from './faqs';
+import { ProductFaqsSkeleton } from './faqs';
 import { COMPONENT_TYPE } from './register';
 
 const limit = 2;
@@ -39,11 +39,25 @@ const ProductFaqs = async ({ productId, productName }: { productId: number, prod
   }
 
   await sleep(5000);
+
+  const snapshot = await getComponentSnapshot(`product-faqs-${productId}`);
   
   const faqCollection = await getProductFaqMetafields(productId);
 
-  return <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
-    limit={limit} productId={productId} />
+  return (
+    <ProductFaqsContextProvider value={{
+      productId,
+      limit,
+      faqs: faqCollection.faqs,
+      initialEndCursor: faqCollection.endCursor
+    }}>
+      <MakeswiftComponent
+        label={`FAQs for ${productName}`}
+        snapshot={snapshot}
+        type={COMPONENT_TYPE}
+      />
+    </ProductFaqsContextProvider>
+  );
 };
 
 export { getProductFaqMetafields, ProductFaqs, ProductFaqsSkeleton };
