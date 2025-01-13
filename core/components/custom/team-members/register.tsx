@@ -37,8 +37,7 @@ runtime.registerComponent(
               label: 'Image',
               format: Image.Format.URL,
             }),
-            // TODO: Add definition of `content` control
-            //  - This should use the `Slot` control to provide a freely editable area
+            content: Slot(),
           },
         }),
         getItemLabel(member) {
