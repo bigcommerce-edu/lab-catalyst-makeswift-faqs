@@ -11,8 +11,7 @@ interface Member {
 }
 
 interface Props {
-  // TODO: Add `className` prop
-  //  - The Makeswift control will combine all configured styles into a single class name, so this is a simple string
+  className?: string;
   members: Member[];
   highlightColor?: string;
   thumbnailTextColor?: string;
@@ -22,7 +21,7 @@ interface Props {
 
 export const TeamMembers = forwardRef((
   { 
-    // TODO: Add `className` prop to the destructuring
+    className,
     members,
     highlightColor,
     thumbnailTextColor,
@@ -54,9 +53,9 @@ export const TeamMembers = forwardRef((
   };
 
   return (
-    // TODO: Add the `className` prop to the collection of class names aggregated with `clsx`
     <div
       className={clsx(
+        className,
         "w-full",
         vertical && "flex gap-4"
       )}
