@@ -4,6 +4,7 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 
 import { Stream } from '@/vibes/soul/lib/streamable';
 import { FeaturedProductsCarousel } from '@/vibes/soul/sections/featured-products-carousel';
+import { ProductFaqs } from '~/custom/components/product-faqs';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
@@ -238,6 +239,8 @@ export default async function Product(props: Props) {
         quantityLabel={t('ProductDetails.quantity')}
         thumbnailLabel={t('ProductDetails.thumbnail')}
       />
+
+      <ProductFaqs productId={productId} />
 
       <FeaturedProductsCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
