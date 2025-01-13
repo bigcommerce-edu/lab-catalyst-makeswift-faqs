@@ -11,15 +11,23 @@ interface Member {
 
 interface Props {
   members: Member[];
+  highlightColor?: string;
+  thumbnailTextColor?: string;
+  thumbnailOrientation?: "vertical" | "horizontal";
+  itemsPerRow?: number;
 }
 
 export const TeamMembers = forwardRef((
   { 
     members,
+    highlightColor,
+    thumbnailTextColor,
+    thumbnailOrientation,
+    itemsPerRow = 3,
   }: Props, 
   ref: Ref<HTMLDivElement>
 ) => {
-  const vertical = true;
+  const vertical = (thumbnailOrientation === "vertical");
   const fadeInDuration = 500;
   const [activeMember, setActiveMember] = useState(0);
   const [visibleMembers, setVisibleMembers] = useState([0]);
@@ -59,17 +67,25 @@ export const TeamMembers = forwardRef((
         >
           <ul 
             className={clsx(
-              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center"
+              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center",
+              vertical || "grid-cols-[var(--itemsPerRow)]"
             )}
+            style={{ 
+              "--itemsPerRow": `repeat(${itemsPerRow}, minmax(0, 1fr))`,
+            } as CSSProperties}
           >
             {members.map((member, index) => (
               <li 
                 className={clsx(
                   `max-w-24 sm:max-w-48 text-center border border-2 p-2 
                   rounded-md cursor-pointer transition-colors duration-300`,
-                  "text-black",
-                  index === activeMember ? "border-black" : "border-transparent",
+                  "text-[var(--textColor)]",
+                  index === activeMember ? "border-[var(--highlightColor)]" : "border-transparent"
                 )} 
+                style={{ 
+                  "--highlightColor": highlightColor,
+                  "--textColor": thumbnailTextColor,
+                } as CSSProperties}
                 key={index} onClick={() => changeActiveMember(index)}
               >
                 <img alt={member.name} className="rounded-full mx-auto max-w-[60%]" src={member.image} />
@@ -90,7 +106,7 @@ export const TeamMembers = forwardRef((
           vertical || "relative h-[560px]"
           )}>
           {members.map((member, index) => {
-            if (!visibleMembers.includes(index)) return null
+            if (!visibleMembers.includes(index)) return null;
 
             return (
               <div  

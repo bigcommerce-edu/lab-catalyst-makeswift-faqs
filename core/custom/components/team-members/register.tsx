@@ -40,6 +40,27 @@ runtime.registerComponent(
           return member?.name || 'Team Member'
         },
       }),
+      highlightColor: Color({
+        label: "Highlight Color",
+      }),
+      thumbnailTextColor: Color({
+        label: "Thumbnail Text Color",
+      }),
+      thumbnailOrientation: Select({
+        label: "Thumbnail Orientation",
+        labelOrientation: "horizontal",
+        options: [
+          { value: "vertical", label: "Vertical" },
+          { value: "horizontal", label: "Horizontal" },
+        ],
+        defaultValue: "vertical",
+      }),
+      itemsPerRow: Number({
+        label: "Horizontal Items Per Row",
+        defaultValue: 3,
+        min: 1,
+        max: 12,
+      }),
     },
   }
 );
