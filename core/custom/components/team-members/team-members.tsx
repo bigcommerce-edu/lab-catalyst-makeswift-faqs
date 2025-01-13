@@ -11,6 +11,7 @@ interface Member {
 }
 
 interface Props {
+  className?: string;
   members: Member[];
   highlightColor?: string;
   thumbnailTextColor?: string;
@@ -20,6 +21,7 @@ interface Props {
 
 export const TeamMembers = forwardRef((
   { 
+    className,
     members,
     highlightColor,
     thumbnailTextColor,
@@ -52,6 +54,7 @@ export const TeamMembers = forwardRef((
   return (
     <div
       className={clsx(
+        className,
         "w-full",
         vertical && "flex gap-4"
       )}

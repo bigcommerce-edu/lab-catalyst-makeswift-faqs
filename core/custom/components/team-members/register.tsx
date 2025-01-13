@@ -20,6 +20,7 @@ runtime.registerComponent(
     type: 'team-members',
     label: 'Team Members',
     props: {
+      className: Style({ properties: Style.All }),
       members: List({
         label: 'Members',
         type: Shape({
