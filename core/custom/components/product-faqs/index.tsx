@@ -16,6 +16,12 @@ const getProductFaqMetafields = cache(
   async (
     productId: number
   ) => {
+    function sleep(ms: number) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  
+    await sleep(5000);
+
     const response = await client.fetch({
       document: MetafieldsQuery,
       variables: {
@@ -35,11 +41,18 @@ const getProductFaqMetafields = cache(
 );
 
 const ProductFaqs = async ({ productId }: { productId: number }) => {
-  const faqCollection = await getProductFaqMetafields(productId);
+  const faqCollectionPromise = getProductFaqMetafields(productId);
 
   return (
-    <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
-      limit={limit} productId={productId} />
+    <Stream fallback={<ProductFaqsSkeleton />} 
+      value={faqCollectionPromise}>
+
+      {(faqCollection) => (
+        <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
+          limit={limit} productId={productId} />
+      )}
+
+    </Stream>
   );
 };
 
