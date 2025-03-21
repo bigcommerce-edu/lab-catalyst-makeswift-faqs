@@ -5,6 +5,7 @@ import { ReactNode, useState } from 'react';
 
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Button } from '@/vibes/soul/primitives/button';
+import { toast } from '@/vibes/soul/primitives/toaster';
 
 import { getNextProductFaqs } from './_actions/get-next-product-faqs';
 import { formatFaqs } from './_data/component-data';
@@ -48,7 +49,9 @@ export function ProductFaqs({
       setEndCursor(nextFaqData.endCursor);
       setMoreFaqs(moreFaqs.concat(nextFaqData.faqs));
     } catch (err) {
-      // Handle error
+      const error = err instanceof Error ? err.message : String(err);
+      
+      toast.error(error);
     }
 
     setPending(false);
