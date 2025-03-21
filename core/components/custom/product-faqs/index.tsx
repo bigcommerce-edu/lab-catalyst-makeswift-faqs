@@ -14,11 +14,9 @@ export async function ProductFaqs({ productId }: { productId: number }) {
   const locale = await getLocale();
 
   const faqCollection = await getProductFaqMetafields({ productId, locale, limit });
-  console.log(faqCollection);
 
   return (
-    <div className="mx-auto w-full max-w-screen-2xl px-4 py-10">
-      FAQ placeholder content for product {productId}
-    </div>
+    <ProductFaqsComponent faqs={faqCollection.faqs} initialEndCursor={faqCollection.endCursor}
+      limit={limit} productId={productId} />
   );
 }
