@@ -11,15 +11,23 @@ interface Member {
 
 interface Props {
   members: Member[];
+  highlightColor?: string;
+  thumbnailTextColor?: string;
+  thumbnailOrientation?: "vertical" | "horizontal";
+  itemsPerRow?: number;
 }
 
 export const TeamMembers = forwardRef((
   { 
     members,
+    highlightColor,
+    thumbnailTextColor,
+    thumbnailOrientation,
+    itemsPerRow = 3,
   }: Props, 
   ref: Ref<HTMLDivElement>
 ) => {
-  const vertical = true;
+  const vertical = (thumbnailOrientation === "vertical");
   const fadeInDuration = 500;
   const [activeMember, setActiveMember] = useState(0);
   const [visibleMembers, setVisibleMembers] = useState([0]);
@@ -59,18 +67,28 @@ export const TeamMembers = forwardRef((
         >
           <ul 
             className={clsx(
-              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center"
+              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center",
+              vertical || "grid-cols-[var(--itemsPerRow)]"
             )}
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            style={{ 
+              "--itemsPerRow": `repeat(${itemsPerRow}, minmax(0, 1fr))`,
+            } as React.CSSProperties}
           >
             {members.map((member, index) => (
               <li 
                 className={clsx(
                   `max-w-24 sm:max-w-48 text-center border border-2 p-2 
                   rounded-md cursor-pointer transition-colors duration-300`,
-                  "text-black",
-                  index === activeMember ? "border-black" : "border-transparent",
+                  "text-[var(--textColor)]",
+                  index === activeMember ? "border-[var(--highlightColor)]" : "border-transparent"
                 )} 
                 key={index} onClick={() => changeActiveMember(index)}
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                style={{ 
+                  "--highlightColor": highlightColor,
+                  "--textColor": thumbnailTextColor,
+                } as React.CSSProperties}
               >
                 <img alt={member.name} className="rounded-full mx-auto max-w-[60%]" src={member.image} />
                 <h3 className="text-sm font-bold">
