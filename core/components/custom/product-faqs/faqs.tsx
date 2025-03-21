@@ -31,6 +31,7 @@ export function ProductFaqs({
 
   const [moreFaqs, setMoreFaqs] = useState<ReturnType<typeof formatFaqs>>([]);
   const [endCursor, setEndCursor] = useState(initialEndCursor);
+  const [pending, setPending] = useState(false);
 
   const allFaqs = faqs.concat(moreFaqs);
 
@@ -38,6 +39,8 @@ export function ProductFaqs({
     if (!productId) {
       return;
     }
+
+    setPending(true);
 
     try {
       const nextFaqData = await getNextProductFaqs({ productId, locale, limit, after: endCursor });
@@ -47,6 +50,8 @@ export function ProductFaqs({
     } catch (err) {
       // Handle error
     }
+
+    setPending(false);
   };
 
   return allFaqs.length <= 0 ? '' : (
@@ -76,6 +81,7 @@ export function ProductFaqs({
           {showLoadMore && (endCursor !== null) && (
             <div className="mx-auto md:w-2/3 lg:w-1/3 text-center">
               <Button
+                loading={pending}
                 onClick={getNextFaqs}
                 variant="secondary"
               >
