@@ -11,6 +11,16 @@ runtime.registerComponent(MakeswiftProductFaqs, {
   label: 'MakeswiftProductFaqs (private)',
   hidden: true,
   props: {
-    
+    faqs: List({
+      label: 'FAQs',
+      type: Group({
+        label: 'FAQ Details',
+        props: {
+          question: TextInput({ label: 'Question', defaultValue: 'Question' }),
+          answer: TextInput({ label: 'Answer', defaultValue: 'Answer' }),
+        },
+      }),
+      getItemLabel: (section) => section?.question || 'Question',
+    }),
   },
 });
