@@ -7,21 +7,58 @@ import { FragmentOf, graphql, VariablesOf } from '~/client/graphql';
 
 const FaqMetafieldsFragment = graphql(`
   fragment FaqMetafieldsFragment on Product {
-
+    name
+    metafields(namespace: "FAQ", first: $limit, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          key
+          value
+        }
+      }
+    }
   }
 `);
 
 const MetafieldsQuery = graphql(
   `
-
+    query getProductFaqMetafields($productId: Int!, $limit: Int, $after: String) {
+      site {
+        product(entityId: $productId) {
+          ...FaqMetafieldsFragment
+        }
+      }
+    }
   `,
   [FaqMetafieldsFragment]
 );
 
+const FaqMetafield = z.object({
+  key: z.string(),
+  question: z.string(),
+  answer: z.string(),
+});
+
 const formatFaqs = (
   product: FragmentOf<typeof FaqMetafieldsFragment>
 ) => {
-  return [];
+  const fields = removeEdgesAndNodes(product.metafields);
+
+  return fields
+    .map((field) => {
+      try {
+        return FaqMetafield.parse({
+          ...JSON.parse(field.value),
+          key: field.key,
+        });
+      } catch {
+        return { key: '', question: '', answer: '' };
+      }
+    })
+    .filter((field) => field.key.trim().length > 0);
 }
 
 const formatFaqsCollection = (
@@ -40,11 +77,18 @@ type Variables = VariablesOf<typeof MetafieldsQuery>;
 
 const getProductFaqMetafields = cache(
   async (variables: Variables) => {
-    return Promise.resolve({
-      productName: null,
-      endCursor: null,
-      faqs: [],
+    const response = await client.fetch({
+      document: MetafieldsQuery,
+      variables,
     });
+
+    const product = response.data.site.product;
+
+    if (!product?.metafields) {
+      return { productName: '', endCursor: null, faqs: [] };
+    }
+
+    return formatFaqsCollection(product);
   }
 );
 
