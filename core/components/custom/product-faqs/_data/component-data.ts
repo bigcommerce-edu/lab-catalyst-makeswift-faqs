@@ -77,6 +77,12 @@ type Variables = VariablesOf<typeof MetafieldsQuery>;
 
 const getProductFaqMetafields = cache(
   async (variables: Variables) => {
+    function sleep(ms: number) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  
+    await sleep(5000);
+
     const response = await client.fetch({
       document: MetafieldsQuery,
       variables,
