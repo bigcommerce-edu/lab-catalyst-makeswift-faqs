@@ -37,6 +37,10 @@ export function ProductFaqs({
         <div className="mx-auto md:w-2/3 p-4">
 
           <Accordion 
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            style={{
+              '--accordion-light-title-text-hover': 'hsl(var(--info))'
+            } as React.CSSProperties}
             type="multiple"
           >
             {faqs.map(faq => (
