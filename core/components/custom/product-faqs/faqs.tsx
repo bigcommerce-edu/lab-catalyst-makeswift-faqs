@@ -3,6 +3,8 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { ReactNode, useState } from 'react';
 
+import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
+
 import { getNextProductFaqs } from './_actions/get-next-product-faqs';
 import { formatFaqs } from './_data/component-data';
 
@@ -34,18 +36,15 @@ export function ProductFaqs({
 
         <div className="mx-auto md:w-2/3 p-4">
 
-        {faqs.map((faq) => (
-          <div className="my-4" key={faq.key}>
-            <div>
-              <label className="font-bold">Question:</label>
-              <span> {faq.question}</span>
-            </div>
-            <div>
-              <label className="font-bold">Answer:</label>
-              <span> {faq.answer}</span>
-            </div>
-          </div>
-        ))}
+          <Accordion 
+            type="multiple"
+          >
+            {faqs.map(faq => (
+              <AccordionItem key={faq.key} title={faq.question} value={faq.key}>
+                {faq.answer}
+              </AccordionItem>
+            ))}
+          </Accordion>
 
         </div>
       </div>
