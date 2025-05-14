@@ -88,7 +88,11 @@ export function useCompareDrawer() {
   const context = useContext(CompareDrawerContext);
 
   if (context === undefined) {
-    throw new Error('useCompareDrawer must be used within a CompareDrawerProvider');
+    return {
+      optimisticItems: [],
+      setOptimisticItems: () => {},
+      maxItems: 0,
+    };
   }
 
   return context;
