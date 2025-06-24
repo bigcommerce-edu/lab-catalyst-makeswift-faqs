@@ -7,21 +7,63 @@ import { FragmentOf, graphql, VariablesOf } from '~/client/graphql';
 
 const FaqMetafieldsFragment = graphql(`
   fragment FaqMetafieldsFragment on Product {
-
+    name
+    metafields(namespace: $namespace, first: $limit, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          key
+          value
+        }
+      }
+    }
   }
 `);
 
 const MetafieldsQuery = graphql(
   `
-
+    query getProductFaqMetafields(
+      $productId: Int!, 
+      $namespace: String!,
+      $limit: Int, 
+      $after: String
+    ) {
+      site {
+        product(entityId: $productId) {
+          ...FaqMetafieldsFragment
+        }
+      }
+    }
   `,
   [FaqMetafieldsFragment]
 );
 
+const FaqMetafield = z.object({
+  key: z.string(),
+  question: z.string(),
+  answer: z.string(),
+});
+
 const formatFaqs = (
   product: FragmentOf<typeof FaqMetafieldsFragment>
 ) => {
-  return [];
+  const fields = removeEdgesAndNodes(product.metafields);
+
+  return fields
+    .map((field) => {
+      try {
+        return FaqMetafield.parse({
+          ...JSON.parse(field.value),
+          key: field.key,
+        });
+      } catch {
+        return { key: '', question: '', answer: '' };
+      }
+    })
+    .filter((field) => field.key.trim().length > 0);
 }
 
 const formatFaqsCollection = (
@@ -41,11 +83,23 @@ type Variables = Omit<VariablesOf<typeof MetafieldsQuery>, 'namespace'>
 
 const getProductFaqMetafields = cache(
   async (variables: Variables) => {
-    return Promise.resolve({
-      productName: null,
-      endCursor: null,
-      faqs: [],
+    const { locale, ...queryVariables } = variables;
+
+    const response = await client.fetch({
+      document: MetafieldsQuery,
+      variables: {
+        ...queryVariables,
+        namespace: `FAQ|${locale}`,
+      },
     });
+
+    const product = response.data.site.product;
+
+    if (!product?.metafields) {
+      return { productName: '', endCursor: null, faqs: [] };
+    }
+
+    return formatFaqsCollection(product);
   }
 );
 
