@@ -449,7 +449,8 @@
       "next": "Next reviews"
     },
     "FAQ": {
-      "heading": "Frequently Asked Questions"
+      "heading": "Frequently Asked Questions",
+      "loadMore": "Load more"
     }
   },
   "WebPages": {
