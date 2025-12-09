@@ -9,16 +9,26 @@ export interface Faq {
 }
 
 interface FaqsListProps {
-  // TODO: Add the `faqs` prop, which should be an array of `Faq` objects
+  faqs: Faq[];
 }
 
 export function FaqsList({
-  // TODO: Add the `faqs` prop to the destructuring
+  faqs,
 }: FaqsListProps) {
-  // TODO: Implement the basic FAQ rendering
-  //  - Loop through the `faqs` array
-  //  - For each FAQ, render simple "Question" and "Answer" labels with corresponding text
-  return (
-    <></>
+  return faqs.length <= 0 ? '' : (
+    <div className="mx-auto md:w-2/3">
+      {faqs.map(faq => (
+        <div className="my-4" key={faq.key}>
+          <div>
+            <label className="font-bold">Question:</label>
+            <span> {faq.question}</span>
+          </div>
+          <div>
+            <label className="font-bold">Answer:</label>
+            <span> {faq.answer}</span>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
