@@ -52,6 +52,15 @@ export const TeamMembers = forwardRef((
     >
       {(members.length > 0) ?
 
+      // TODO: Replace this simple count output with the main interface
+      //  - Several style classes will be conditional on whether `vertical` is the current orientation
+      //  - Render one `<ul>` with a thumbnail for each team member
+      //    - The border color will be conditional on whether the member is the active member
+      //    - Thumbnails should trigger the `changeActiveMember` function when clicked
+      //    - Each thumbnail should include the member's name, image and position
+      //  - Render another `<ul>` with the main content area for each team member
+      //    - If the team member isn't in `visibleMembers`, nothing should be rendered
+      //    - For now, only the team member's name should be rendered
       <div className="w-full"><h3 className="text-lg text-center">Number of Team Members: {members.length}</h3></div>
 
       : 
