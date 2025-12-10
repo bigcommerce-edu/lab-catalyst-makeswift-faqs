@@ -7,12 +7,15 @@ export interface Faq {
 }
 
 interface FaqsListProps {
-
+  // TODO: Add the `faqs` prop, which should be an array of `Faq` objects
 }
 
 export function FaqsList({
-
+  // TODO: Add the `faqs` prop to the destructuring
 }: FaqsListProps) {
+  // TODO: Implement the basic FAQ rendering
+  //  - Loop through the `faqs` array
+  //  - For each FAQ, render simple "Question" and "Answer" labels with corresponding text
   return (
     <></>
   );
