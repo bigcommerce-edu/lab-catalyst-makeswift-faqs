@@ -24,6 +24,6 @@ runtime.registerComponent(MakeswiftProductFaqs, {
       }),
       getItemLabel: (section) => section?.question || 'Question',
     }),
-    // TODO: Add the top-level `showOriginal` prop, which should be a boolean
+    showOriginal: Checkbox({ label: 'Show metafields-based FAQs', defaultValue: true }),
   },
 });
