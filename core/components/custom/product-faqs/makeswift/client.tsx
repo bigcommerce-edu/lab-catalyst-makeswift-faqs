@@ -61,6 +61,11 @@ export const MakeswiftProductFaqs = forwardRef(
       <Stream fallback={<ProductFaqsSkeleton />} value={streamableFaqsCollection}>
       {(passedFaqsCollection) => {
 
+        // TODO: Combine the faqs provided by the Makeswift control with those loaded based on metafields
+        //  - Create an `allFaqs` array that concatenates `formattedFaqs` with `passedFaqsCollection.faqs`
+        //  - Create our new `allFaqsCollection` simply by pairing the new array with `passedFaqsCollection.endCursor`
+
+        // TODO: Update the `faqsCollection` prop to use the new `allFaqsCollection` with the combined FAQs
         return (
           <div ref={ref}>
             <ProductFaqs 
