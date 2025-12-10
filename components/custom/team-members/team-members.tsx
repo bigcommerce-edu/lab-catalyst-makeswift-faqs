@@ -3,16 +3,19 @@
 import { clsx } from 'clsx';
 import { forwardRef, ReactNode, Ref, useState } from 'react';
 
-// TODO: Add a `Member` interface to define what each item in the list will contain
-//  - `name`, `position` and `image` should be optional strings
+interface Member {
+  name?: string;
+  position?: string;
+  image?: string;
+}
 
 interface Props {
-  // TODO: Add the `members` prop, which should be an array of `Member` objects
+  members: Member[];
 }
 
 export const TeamMembers = forwardRef((
   { 
-    // TODO: Add the `members` prop to the destructuring
+    members,
   }: Props, 
   ref: Ref<HTMLDivElement>
 ) => {
@@ -23,11 +26,15 @@ export const TeamMembers = forwardRef((
       )}
       ref={ref}
     >
-      {/* TODO: Replace the placeholder with a simple implementation that displays a count for now 
-            - If there are members, display the count of members
-            - If there are no members, display the message "Add a Team Member"
-      */}
-      Team Members
+      {(members.length > 0) ?
+
+      <div className="w-full"><h3 className="text-lg text-center">Number of Team Members: {members.length}</h3></div>
+
+      : 
+
+      <div className="w-full"><h3 className="text-lg text-center">Add a Team Member</h3></div>
+
+      }
     </div>
   )
 });
