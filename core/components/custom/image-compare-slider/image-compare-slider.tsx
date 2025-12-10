@@ -27,6 +27,7 @@ export const ImageCompareSlider = forwardRef((
       )} 
       ref={ref}
     >
+      {/* TODO: Update the `src` of each `ReactCompareSliderImage` to use the corresponding prop */}
       <ReactCompareSlider
         itemOne={
           <ReactCompareSliderImage 
