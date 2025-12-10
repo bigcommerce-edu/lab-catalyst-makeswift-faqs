@@ -13,22 +13,24 @@ interface Props {
   // TODO: Add `className` prop
   //  - The Makeswift control will combine all configured styles into a single class name, so this is a simple string
   members: Member[];
-  // TODO: Add new props to the interface
-  //  - `highlightColor` and `thumbnailTextColor` should be optional strings
-  //  - `thumbnailOrientation` should be an optional string of the specific value 'vertical' or 'horizontal'
-  //  - `itemsPerRow` should be an optional number
+  highlightColor?: string;
+  thumbnailTextColor?: string;
+  thumbnailOrientation?: "vertical" | "horizontal";
+  itemsPerRow?: number;
 }
 
 export const TeamMembers = forwardRef((
   { 
     // TODO: Add `className` prop to the destructuring
     members,
-    // TODO: Add `highlightColor`, `thumbnailTextColor`, `thumbnailOrientation`, and `itemsPerRow` to the destructuring
+    highlightColor,
+    thumbnailTextColor,
+    thumbnailOrientation,
+    itemsPerRow = 3,
   }: Props, 
   ref: Ref<HTMLDivElement>
 ) => {
-  // TODO: Update this constant to be based on whether `thumbnailOrientation` is 'vertical' or 'horizontal'
-  const vertical = true;
+  const vertical = (thumbnailOrientation === "vertical");
   const fadeInDuration = 500;
   
   const [activeMember, setActiveMember] = useState(0);
@@ -68,28 +70,30 @@ export const TeamMembers = forwardRef((
             vertical || "p-4"
           )}
         >
-          {/* TODO: Utilize the `itemsPerRow` prop for styling
-              - Add a `style` attribute to set a `--itemsPerRow` CSS variable based on the prop
-              - Add a dynamic `grid-cols` classname based on the CSS variable
-          */}
           <ul 
             className={clsx(
-              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center"
+              vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center",
+              vertical || "grid-cols-[var(--itemsPerRow)]"
             )}
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            style={{ 
+              "--itemsPerRow": `repeat(${itemsPerRow}, minmax(0, 1fr))`,
+            } as React.CSSProperties}
           >
-            {/* TODO: Update style classees for each <li> to use highlight and text color props 
-                  - Add a `style` attribute to set `--highlightColor` and `--textColor` CSS variables based on the appropriate props
-                  - Update the style class names to switch from hard-coded values to values based on the CSS variables
-            */}
             {members.map((member, index) => (
               <li 
                 className={clsx(
                   `max-w-24 sm:max-w-48 text-center border border-2 p-2 
                   rounded-md cursor-pointer transition-colors duration-300`,
-                  "text-black",
-                  index === activeMember ? "border-black" : "border-transparent",
+                  "text-[var(--textColor)]",
+                  index === activeMember ? "border-[var(--highlightColor)]" : "border-transparent"
                 )} 
                 key={index} onClick={() => changeActiveMember(index)}
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                style={{ 
+                  "--highlightColor": highlightColor,
+                  "--textColor": thumbnailTextColor,
+                } as React.CSSProperties}
               >
                 <img alt={member.name} className="rounded-full mx-auto max-w-[60%]" src={member.image} />
                 <h3 className="text-sm font-bold">

@@ -43,12 +43,27 @@ runtime.registerComponent(
           return member?.name || 'Team Member'
         },
       }),
-      // TODO: Add other main prop controls
-      //  - `highlightColor` will control the border color of the active team member thumbnail and should use the `Color` control
-      //  - `thumbnailTextColor` will control the text color in each thumbnail and should use the `Color` control
-      //  - `thumbnailOrientation` will control several style classes to switch between a vertical or horizontal orientation
-      //      - This should use the `Select` control with options for 'vertical' and 'horizontal'
-      //  - `itemsPerRow` will control how many team members are displayed per row in horizontal orientation and should use the `Number` control
+      highlightColor: Color({
+        label: "Highlight Color",
+      }),
+      thumbnailTextColor: Color({
+        label: "Thumbnail Text Color",
+      }),
+      thumbnailOrientation: Select({
+        label: "Thumbnail Orientation",
+        labelOrientation: "horizontal",
+        options: [
+          { value: "vertical", label: "Vertical" },
+          { value: "horizontal", label: "Horizontal" },
+        ],
+        defaultValue: "vertical",
+      }),
+      itemsPerRow: Number({
+        label: "Horizontal Items Per Row",
+        defaultValue: 3,
+        min: 1,
+        max: 12,
+      }),
     },
   }
 );
