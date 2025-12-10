@@ -29,11 +29,13 @@ export const ProductFaqsContextProvider = (
   <ProductFaqsContext.Provider value={value}>{children}</ProductFaqsContext.Provider>
 );
 
-// TODO: Add `ProductFaq` interface to define what each FAQ item from the Makeswift control should look like
-//  - `question` and `answer` should be strings
+interface ProductFaq {
+  question: string;
+  answer: string;
+}
 
 interface ProductFaqsProps {
-  // TODO: Add the `faqs` prop, which should be an array of `ProductFaq` items
+  faqs: ProductFaq[];
   // TODO: Add the `showOriginal` prop, which should be a boolean
 }
 
@@ -45,31 +47,40 @@ interface ProductFaqsProps {
 export const MakeswiftProductFaqs = forwardRef(
   (
     {
-      // TODO: Add the `faqs` prop to the destructuring
+      faqs,
       // TODO: Add the `showOriginal` prop to the destructuring
     }: ProductFaqsProps,
     ref: Ref<HTMLDivElement>,
   ) => {
     const { productId, limit, faqsCollection: streamableFaqsCollection, heading } = useContext(ProductFaqsContext);
 
-    // TODO: Reformat the faqs that were passed in as a prop (controlled by Makeswift)
-    //  - Each item already has a `question` and `answer` property
-    //  - The main component also expects a `key` on each, so use each item's index to add this key
-    //  - Store the result in a new variable called `formattedFaqs`
+    const formattedFaqs = faqs.map(
+      (faq, index) => {
+        return {
+          key: index.toString(),
+          question: faq.question,
+          answer: faq.answer,
+        };
+      }
+    );
 
     return (
       <Stream fallback={<ProductFaqsSkeleton />} value={streamableFaqsCollection}>
       {(passedFaqsCollection) => {
 
-        // TODO: Combine the faqs provided by the Makeswift control with those loaded based on metafields
-        //  - Create an `allFaqs` array that concatenates `formattedFaqs` with `passedFaqsCollection.faqs`
-        //  - Create our new `allFaqsCollection` simply by pairing the new array with `passedFaqsCollection.endCursor`
+        const allFaqs = formattedFaqs.concat(
+          passedFaqsCollection.faqs
+        );
 
-        // TODO: Update the `faqsCollection` prop to use the new `allFaqsCollection` with the combined FAQs
+        const allFaqsCollection = {
+          endCursor: passedFaqsCollection.endCursor,
+          faqs: allFaqs,
+        };
+
         return (
           <div ref={ref}>
             <ProductFaqs 
-              faqsCollection={passedFaqsCollection} 
+              faqsCollection={allFaqsCollection} 
               heading={heading}
               limit={limit} 
               productId={productId} 
