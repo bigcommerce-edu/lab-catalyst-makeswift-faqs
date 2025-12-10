@@ -31,6 +31,12 @@ export function ProductFaqs({
       </h2>
       
       <FaqsList faqs={faqsCollection.faqs} />
+
+      {/* TODO: Render the `LoadMoreFaqs` component
+            - This should be conditional on `showLoadMore` being `true` and there actually being an `endCursor` value
+            - Pass `faqsCollection.endCursor` as the `endCursor` prop
+            - Pass the `limit` and `productId` props
+      */}
     </div>
     </section>
   );
