@@ -39,7 +39,7 @@ export function LoadMoreFaqs({
       setEndCursor(nextFaqData.endCursor);
       setFaqs(faqs.concat(nextFaqData.faqs));
     } catch (err) {
-      // Handle error
+      // TODO: Handle the error by using the built-in `toast` component with the error message
     }
 
     setPending(false);
