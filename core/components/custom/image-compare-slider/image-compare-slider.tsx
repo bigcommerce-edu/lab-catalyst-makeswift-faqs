@@ -7,15 +7,15 @@ import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slide
 interface Props {
   // TODO: Add the `className` prop
   //  - The Makeswift control will combine all configured styles into a single class name, so this is a simple string
-  // TODO: Add the props that will be received from Makeswift controls
-  //  - `image1` and `image2` should both be strings containing the image URLs
+  image1?: string;
+  image2?: string;
 }
 
 export const ImageCompareSlider = forwardRef((
   { 
     // TODO: Add `className` to the destructuring
-    // TODO: Add the new props to the destructuring
-    //  - These can still use the placeholder URLs as default values
+    image1 = "https://placehold.co/600x400", 
+    image2 = "https://placehold.co/600x400",
   }: Props,
   ref: Ref<HTMLDivElement>
 ) => {
@@ -27,16 +27,15 @@ export const ImageCompareSlider = forwardRef((
       )} 
       ref={ref}
     >
-      {/* TODO: Update the `src` of each `ReactCompareSliderImage` to use the corresponding prop */}
       <ReactCompareSlider
         itemOne={
           <ReactCompareSliderImage 
-            src="https://placehold.co/600x400"
+            src={image1}
           />
         }
         itemTwo={
           <ReactCompareSliderImage 
-            src="https://placehold.co/600x400"
+            src={image2}
           />
         }
       />
