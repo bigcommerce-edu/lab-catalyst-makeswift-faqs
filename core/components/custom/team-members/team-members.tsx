@@ -3,13 +3,16 @@
 import { clsx } from 'clsx';
 import { forwardRef, ReactNode, Ref, useState } from 'react';
 
-// TODO: Add a `Member` interface to define what each item in the list will contain
-//  - `name`, `position` and `image` should be optional strings
+interface Member {
+  name?: string;
+  position?: string;
+  image?: string;
+}
 
 interface Props {
   // TODO: Add `className` prop
   //  - The Makeswift control will combine all configured styles into a single class name, so this is a simple string
-  // TODO: Add the `members` prop, which should be an array of `Member` objects
+  members: Member[];
   // TODO: Add new props to the interface
   //  - `highlightColor` and `thumbnailTextColor` should be optional strings
   //  - `thumbnailOrientation` should be an optional string of the specific value 'vertical' or 'horizontal'
@@ -19,7 +22,7 @@ interface Props {
 export const TeamMembers = forwardRef((
   { 
     // TODO: Add `className` prop to the destructuring
-    // TODO: Add the `members` prop to the destructuring
+    members,
     // TODO: Add `highlightColor`, `thumbnailTextColor`, `thumbnailOrientation`, and `itemsPerRow` to the destructuring
   }: Props, 
   ref: Ref<HTMLDivElement>
@@ -47,11 +50,15 @@ export const TeamMembers = forwardRef((
       )}
       ref={ref}
     >
-      {/* TODO: Replace the placeholder with a simple implementation that displays a count for now 
-            - If there are members, display the count of members
-            - If there are no members, display the message "Add a Team Member"
-      */}
-      Team Members
+      {(members.length > 0) ?
+
+      <div className="w-full"><h3 className="text-lg text-center">Number of Team Members: {members.length}</h3></div>
+
+      : 
+
+      <div className="w-full"><h3 className="text-lg text-center">Add a Team Member</h3></div>
+
+      }
     </div>
   )
 });
