@@ -3,36 +3,59 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { Button } from '@/vibes/soul/primitives/button';
+
 import { getNextProductFaqs } from './_actions/get-next-product-faqs';
 import { Faq, FaqsList } from './faqs-list';
 
 interface LoadMoreFaqsProps {
-  // TODO: Add new props to the component interface
-  //  - `productId` should be a number
-  //  - `limit` should be a number
-  //  - `initialEndCursor` should be a string or null
+  productId: number;
+  limit: number;
+  initialEndCursor: string | null;
 }
 
 export function LoadMoreFaqs({
-  // TODO: Add new props to the destructuring
+  productId,
+  limit,
+  initialEndCursor,
 }: LoadMoreFaqsProps) {
-  // TODO: Use `useLocale` and `useTranslations` to get the `Product.FAQ` translations (for the `loadMore` string)
+  const locale = useLocale();
+  const t = useTranslations('Product.FAQ');
 
-  // TODO: Establish state values to track `faqs` and `endCursor`
-  //  - `faqs` will track an array of "more" `Faq` objects to be rendered
-  //  - `endCursor` will track the end cursor of the most recently fetched "page." `initialEndCursor` should be the initial value.
+  const [faqs, setFaqs] = useState<Faq[]>([]);
+  const [endCursor, setEndCursor] = useState<string | null>(initialEndCursor);
 
-  // TODO: Create the `getNextFaqs` async function
-  //  - Use the `getNextProductFaqs` server action to fetch the next "page" of FAQs
-  //    - Pass the `productId`, `locale`, `limit`, and `after` variables (use `endCursor` for `after`)
-  //    - The server action will run the same GraphQL query as the initial fetch, but with the appropriate cursor
-  //  - Concatenate the `faqs` from the response to the existing `faqs` state
-  //  - Also set the `endCursor` state with the new end cursor
+  const getNextFaqs = async () => {
+    if (!productId) {
+      return;
+    }
 
-  // TODO: Fill in the JSX implementation
-  //  - Use the same component used for the initial FAQs - `FaqsList` - to render the "more" FAQs
-  //  - Render a `Button` from the core component library, which should trigger `getNextFaqs` when clicked
+    try {
+      const nextFaqData = await getNextProductFaqs({ productId, locale, limit, after: endCursor });
+
+      setEndCursor(nextFaqData.endCursor);
+      setFaqs(faqs.concat(nextFaqData.faqs));
+    } catch (err) {
+      // Handle error
+    }
+  };
+
   return (
-    <></>
+    <>
+      {faqs.length > 0 && (
+        <FaqsList faqs={faqs} />
+      )}
+
+      {(endCursor !== null) && (
+        <div className="mx-auto md:w-2/3 lg:w-1/3 text-center py-4">
+          <Button
+            onClick={getNextFaqs}
+            variant="secondary"
+          >
+            {t('loadMore')}
+          </Button>
+        </div>
+      )}
+    </>
   );
 }
