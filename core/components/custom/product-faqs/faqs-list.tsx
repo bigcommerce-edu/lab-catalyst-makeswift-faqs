@@ -19,11 +19,11 @@ export function FaqsList({
 }: FaqsListProps) {
   return faqs.length <= 0 ? '' : (
     <div className="mx-auto md:w-2/3">
-      {/* TODO: Add a `style` prop to override the hover text color of `Accordion`
-            - The `--accordion-light-title-text-hover` CSS variables is exposed by the component for this
-            - Use the generic `--info` CSS variable as the value for this var (passing to the `hsl` function)
-      */}
       <Accordion 
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        style={{
+          '--accordion-light-title-text-hover': 'hsl(var(--info))'
+        } as React.CSSProperties}
         type="multiple"
       >
         {faqs.map(faq => (
