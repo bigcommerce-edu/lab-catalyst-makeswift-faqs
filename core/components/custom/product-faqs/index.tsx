@@ -6,7 +6,8 @@ import { LoadMoreFaqs } from './load-more-faqs';
 //  - `faqs` should be an array of the `Faq` type we already have from `FaqsList`
 
 interface ProductFaqsProps {
-  // TODO: Add `productId` and `heading` to the props interface
+  productId: number;
+  heading: string;
   // TODO: Add the `limit` and `faqsCollection` props
   //  - `limit` should be a number
   //  - `faqsCollection` should be a `FaqsCollection` type
@@ -15,18 +16,23 @@ interface ProductFaqsProps {
 }
 
 export function ProductFaqs({
-  // TODO: Add `productId` and `heading` to the props destructuring
+  productId,
+  heading,
   // TODO: Add the `limit` and `faqsCollection` props to the destructuring
   // TODO: Add the `showLoadMore` prop to the destructuring
   //  - Set a default value of `true`
 }: ProductFaqsProps) {
   // TODO: Temporarily log the contents of `faqsCollection`
 
-  // TODO: Fill in the basic placeholder content
-  //  - Render a heading with the `heading` text
-  //  - Render placeholder text including the `productId`
   return (
-    <></>
+    <section className="overflow-hidden @container">
+    <div className="mx-auto w-full max-w-screen-2xl px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
+      <h2 className="font-heading text-2xl leading-none @xl:text-3xl @4xl:text-4xl py-4">
+        {heading}
+      </h2>
+      <p>FAQs for product ID {productId}</p>
+    </div>
+    </section>
   );
 }
 

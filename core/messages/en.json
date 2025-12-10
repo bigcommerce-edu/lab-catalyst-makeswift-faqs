@@ -468,6 +468,9 @@
       "empty": "No reviews have been added for this product.",
       "previous": "Previous reviews",
       "next": "Next reviews"
+    },
+    "FAQ": {
+      "heading": "Frequently Asked Questions"
     }
   },
   "WebPages": {
