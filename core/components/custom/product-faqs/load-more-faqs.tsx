@@ -25,10 +25,14 @@ export function LoadMoreFaqs({
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [endCursor, setEndCursor] = useState<string | null>(initialEndCursor);
 
+  // TODO: Add a `pending` boolean state value to track when the data is loading
+
   const getNextFaqs = async () => {
     if (!productId) {
       return;
     }
+
+    // TODO: Set `pending` to `true` before we begin the fetch
 
     try {
       const nextFaqData = await getNextProductFaqs({ productId, locale, limit, after: endCursor });
@@ -38,6 +42,8 @@ export function LoadMoreFaqs({
     } catch (err) {
       // Handle error
     }
+
+    // TODO: Set `pending` to `false` after the fetch is complete
   };
 
   return (
@@ -48,6 +54,7 @@ export function LoadMoreFaqs({
 
       {(endCursor !== null) && (
         <div className="mx-auto md:w-2/3 lg:w-1/3 text-center py-4">
+          {/* TODO: Use the `pending` state value with the `Button` component's built-in `loading` prop */}
           <Button
             onClick={getNextFaqs}
             variant="secondary"
