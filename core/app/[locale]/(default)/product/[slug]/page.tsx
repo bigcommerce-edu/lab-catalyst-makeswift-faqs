@@ -8,9 +8,7 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { getProductFaqMetafields } from '~/components/custom/product-faqs/_data/component-data';
-// TODO: Update the import for `ProductFaqs` to the `makeswift` file path
-//  - This version exposes the same props, so use of the component doesn't need to change
-import { ProductFaqs } from '~/components/custom/product-faqs';
+import { ProductFaqs } from '~/components/custom/product-faqs/makeswift';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
