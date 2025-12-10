@@ -388,6 +388,10 @@ export default async function Product({ params, searchParams }: Props) {
         />
       </ProductAnalyticsProvider>
 
+      {/* TODO: Add new props
+            - Pass the fetched collection to the `faqsCollection` prop 
+            - Pass the `limit` prop so the component can use it for further fetches
+      */}
       <ProductFaqs
         heading={faqsHeading}
         productId={productId}
