@@ -11,8 +11,7 @@ interface ProductFaqsProps {
   heading: string;
   limit: number;
   faqsCollection: FaqsCollection;
-  // TODO: Add a `showLoadMore` prop, which should be a boolean
-  //  - "Load More" will always be shown for now, but exposing this prop allows more flexibility for future implementation
+  showLoadMore?: boolean;
 }
 
 export function ProductFaqs({
@@ -20,8 +19,7 @@ export function ProductFaqs({
   heading,
   limit,
   faqsCollection,
-  // TODO: Add the `showLoadMore` prop to the destructuring
-  //  - Set a default value of `true`
+  showLoadMore = true,
 }: ProductFaqsProps) {
   return (
     <section className="overflow-hidden @container">
@@ -32,11 +30,13 @@ export function ProductFaqs({
       
       <FaqsList faqs={faqsCollection.faqs} />
 
-      {/* TODO: Render the `LoadMoreFaqs` component
-            - This should be conditional on `showLoadMore` being `true` and there actually being an `endCursor` value
-            - Pass `faqsCollection.endCursor` as the `endCursor` prop
-            - Pass the `limit` and `productId` props
-      */}
+      {showLoadMore && (faqsCollection.endCursor !== null) && (
+        <LoadMoreFaqs 
+          initialEndCursor={faqsCollection.endCursor}
+          limit={limit}
+          productId={productId}
+        />
+      )}
     </div>
     </section>
   );
