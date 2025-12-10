@@ -8,6 +8,7 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductVideos } from '@/vibes/soul/sections/product-detail/product-videos';
 import { auth, getSessionCustomerAccessToken } from '~/auth';
+import { ProductFaqs } from '~/components/custom/product-faqs';
 import { rewriteWysiwygContentUrls } from '~/data-transformers/html-content-transformer';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
@@ -568,7 +569,8 @@ export default async function Product({ params, searchParams }: Props) {
     return { email: session?.user?.email ?? '', name: obfuscatedName };
   });
 
-  // TODO: Get `Product.FAQ` translations and fetch the `heading` string to pass to the `ProductFaqs` component
+  const tFaqs = await getTranslations('Product.FAQ');
+  const faqsHeading = tFaqs('heading');
 
   return (
     <>
@@ -629,9 +631,10 @@ export default async function Product({ params, searchParams }: Props) {
         {(videos) => videos.length > 0 && <ProductVideos videos={videos} />}
       </Stream>
 
-      {/* TODO: Render the `ProductFaqs` component
-            - Pass the `heading` and `productId` props
-      */}
+      <ProductFaqs
+        heading={faqsHeading}
+        productId={productId}
+      />
 
       <FeaturedProductCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
