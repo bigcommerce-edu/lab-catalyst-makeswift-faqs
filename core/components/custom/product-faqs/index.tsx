@@ -32,6 +32,9 @@ export function ProductFaqs({
       <h2 className="font-heading text-2xl leading-none @xl:text-3xl @4xl:text-4xl py-4">
         {heading}
       </h2>
+      {/* TODO: Replace this placeholder with the `FaqsList` component 
+            - `faqsCollection.faqs` contains the array to pass to the `faqs` prop
+      */}
       <p>FAQs for product ID {productId}</p>
     </div>
     </section>
