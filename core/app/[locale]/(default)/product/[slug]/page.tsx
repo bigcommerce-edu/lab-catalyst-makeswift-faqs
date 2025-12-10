@@ -549,6 +549,15 @@ export default async function Product({ params, searchParams }: Props) {
     return { email: session?.user?.email ?? '', name: obfuscatedName };
   });
 
+  // TODO: Get `Product.FAQ` translations and fetch the `heading` string to pass to the `ProductFaqs` component
+
+  // TODO: Establish a "page" limit for FAQ metafields, for use in the initial fetch and to pass down to components
+
+  // TODO: Use `getProductFaqMetafields` to fetch the initial FAQ metafields
+  //  - Pass the `productId`, `locale`, and `limit`
+  //  - Await the response
+  //  - The response will be a "collection" that includes both the `faqs` list and the `endCursor`
+
   return (
     <>
       <ProductAnalyticsProvider data={streamableAnalyticsData}>
@@ -596,6 +605,10 @@ export default async function Product({ params, searchParams }: Props) {
           user={streamableUser}
         />
       </ProductAnalyticsProvider>
+
+      {/* TODO: Render the `ProductFaqs` component 
+            - Pass the `heading` and `productId` props
+      */}
 
       <FeaturedProductCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
