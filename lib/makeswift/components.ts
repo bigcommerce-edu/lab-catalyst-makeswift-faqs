@@ -16,5 +16,5 @@ import './components/slideshow/register';
 import './components/sticky-sidebar/register';
 
 import '~/components/custom/image-compare-slider/register';
-// TODO: Add the registration of `product-faqs`
+import '~/components/custom/product-faqs/makeswift/register';
 import '~/components/custom/team-members/register';

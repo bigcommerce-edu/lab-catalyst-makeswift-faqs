@@ -9,9 +9,7 @@ import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-
 import { ProductVideos } from '@/vibes/soul/sections/product-detail/product-videos';
 import { auth, getSessionCustomerAccessToken } from '~/auth';
 import { getProductFaqMetafields } from '~/components/custom/product-faqs/_data/component-data';
-// TODO: Update the import for `ProductFaqs` to the `makeswift` file path
-//  - This version exposes the same props, so use of the component doesn't need to change
-import { ProductFaqs } from '~/components/custom/product-faqs';
+import { ProductFaqs } from '~/components/custom/product-faqs/makeswift';
 import { rewriteWysiwygContentUrls } from '~/data-transformers/html-content-transformer';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
