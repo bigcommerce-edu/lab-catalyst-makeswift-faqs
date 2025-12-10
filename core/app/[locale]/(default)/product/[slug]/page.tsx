@@ -342,12 +342,9 @@ export default async function Product({ params, searchParams }: Props) {
   const tFaqs = await getTranslations('Product.FAQ');
   const faqsHeading = tFaqs('heading');
   const faqsLimit = 2;
-
-  // TODO: Wrap the fetch in a `Streamable.from` async function
-  //  - The primary change is that the fetch will not be awaited before the main page is rendered
-  //  - Making use of `Streamable.from` results in a promise that won't be executed until it's eventually awaited
-  //  - Follow the standard convention by storing the result as `streamableFaqsCollection`
-  const faqsCollection = await getProductFaqMetafields({ productId, locale, limit: faqsLimit });
+  const streamableFaqsCollection = Streamable.from(async () => {
+    return await getProductFaqMetafields({ productId, locale, limit: faqsLimit });
+  });
 
   return (
     <>
@@ -389,9 +386,8 @@ export default async function Product({ params, searchParams }: Props) {
         />
       </ProductAnalyticsProvider>
 
-      {/* TODO: Update the `faqsCollection` prop to use the `streamableFaqsCollection` promise */}
       <ProductFaqs
-        faqsCollection={faqsCollection}
+        faqsCollection={streamableFaqsCollection}
         heading={faqsHeading}
         limit={faqsLimit}
         productId={productId}
