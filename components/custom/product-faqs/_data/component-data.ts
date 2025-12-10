@@ -81,8 +81,7 @@ type Variables = Omit<VariablesOf<typeof MetafieldsQuery>, 'namespace'>
 
 const getProductFaqMetafields = cache(
   async (variables: Variables) => {
-    // TODO: Add in a "fake" delay of 5 seconds
-    //  - This is as simple as awaiting a new promise with a `setTimeout` to resolve it
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const { locale, ...queryVariables } = variables;
 
