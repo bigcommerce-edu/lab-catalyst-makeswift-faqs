@@ -1,3 +1,5 @@
+import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+
 import { Faq, FaqsList } from './faqs-list';
 import { LoadMoreFaqs } from './load-more-faqs';
 
@@ -10,8 +12,7 @@ interface ProductFaqsProps {
   productId: number;
   heading: string;
   limit: number;
-  // TODO: Update `faqsCollection` to be a `Streamable` of the defined type
-  faqsCollection: FaqsCollection;
+  faqsCollection: Streamable<FaqsCollection>;
   showLoadMore?: boolean;
 }
 
@@ -19,17 +20,14 @@ export function ProductFaqs({
   productId,
   heading,
   limit,
-  // TODO: Follow the standard convention by aliasing `faqsCollection` as `streamableFaqsCollection`
-  //  - This makes it easy to distinguish the eventual `faqsCollection` value after the streamable value is resolved
-  faqsCollection,
+  faqsCollection: streamableFaqsCollection,
   showLoadMore = true,
 }: ProductFaqsProps) {
 
-  // TODO: Wrap the existing implementation in `<Stream>`
-  //  - `<Stream>` should use `ProductFaqsSkeleton` as the fallback and accept `streamableFaqsCollection` as its value
-  //  - The immediate child of `<Stream>` should be a callback function accepting the resolved `faqsCollection`
-  //  - The rest of the implementation then remains unchanged, treating `faqsCollection` as before
   return (
+    <Stream fallback={<ProductFaqsSkeleton />} value={streamableFaqsCollection}>
+    {(faqsCollection) => (
+
     <section className="overflow-hidden @container">
     <div className="mx-auto w-full max-w-screen-2xl px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
       <h2 className="font-heading text-2xl leading-none @xl:text-3xl @4xl:text-4xl py-4">
@@ -47,12 +45,18 @@ export function ProductFaqs({
       )}
     </div>
     </section>
+
+    )}
+    </Stream>
   );
 }
 
 export function ProductFaqsSkeleton() {
-  // TODO: Flesh out the skeleton component using simple Tailwind classes, including for animation
   return (
-    <></>
+    <div className="animate-pulse mx-auto md:w-2/3 p-4 items-center">
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+      <div className="my-3 h-12 w-full rounded-md bg-contrast-100 @md:my-4" />
+    </div>  
   );
 }
