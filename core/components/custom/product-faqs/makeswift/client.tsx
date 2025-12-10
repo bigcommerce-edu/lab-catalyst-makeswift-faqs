@@ -32,9 +32,8 @@ export const ProductFaqsContextProvider = (
 interface ProductFaq {
   question: string;
   answer: string;
-  // TODO: Add the `richContent` and `content` props for each item
-  //  - `richContent` should be a boolean, controlling whether to show a dynamic slot or an answer string
-  //  - `content` should be a `ReactNode`, as standard for the contents of a Makeswift slot
+  richContent: boolean;
+  content: ReactNode;
 }
 
 interface ProductFaqsProps {
@@ -62,10 +61,7 @@ export const MakeswiftProductFaqs = forwardRef(
         return {
           key: index.toString(),
           question: faq.question,
-          // TODO: While reformatting the Makeswift-provided FAQ items, set `answer` conditionally
-          //  - If `richContent` is true, use the `content` slot as the answer
-          //  - If `richContent` is false, use the `answer` string as the answer
-          answer: faq.answer,
+          answer: (faq.richContent) ? faq.content : faq.answer,
         };
       }
     );
