@@ -2,6 +2,7 @@
 
 import { clsx } from 'clsx';
 import { forwardRef, Ref } from 'react';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 interface Props {
   // TODO: Add the `className` prop
@@ -26,11 +27,18 @@ export const ImageCompareSlider = forwardRef((
       )} 
       ref={ref}
     >
-      {/* TODO: Replace the placeholder with the basic compare slider implementation 
-            - Use the `ReactCompareSlider` and `ReactCompareSliderImage` components from `react-compare-slider`
-            - For the initial implementation, use the placeholder image URL `https://placehold.co/600x400` for both images
-      */}
-      Image Compare Slider
+      <ReactCompareSlider
+        itemOne={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+        itemTwo={
+          <ReactCompareSliderImage 
+            src="https://placehold.co/600x400"
+          />
+        }
+      />
     </div>
   );
 });
