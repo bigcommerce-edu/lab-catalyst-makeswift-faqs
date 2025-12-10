@@ -17,4 +17,4 @@ import './components/sticky-sidebar/register';
 
 import '~/components/custom/image-compare-slider/register';
 // TODO: Add the registration of `product-faqs`
-// TODO: Add the registration of `team-members`
+import '~/components/custom/team-members/register';
