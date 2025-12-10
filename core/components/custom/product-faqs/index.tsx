@@ -1,24 +1,26 @@
 import { Faq, FaqsList } from './faqs-list';
 import { LoadMoreFaqs } from './load-more-faqs';
 
-// TODO: Add a `FaqsCollection` interface
-//  - `endCursor` should be a string or null
-//  - `faqs` should be an array of the `Faq` type we already have from `FaqsList`
+interface FaqsCollection {
+  endCursor: string | null;
+  faqs: Faq[];
+}
 
 interface ProductFaqsProps {
   productId: number;
   heading: string;
-  // TODO: Add the `limit` and `faqsCollection` props
-  //  - `limit` should be a number
-  //  - `faqsCollection` should be a `FaqsCollection` type
+  limit: number;
+  faqsCollection: FaqsCollection;
 }
 
 export function ProductFaqs({
   productId,
   heading,
-  // TODO: Add the `limit` and `faqsCollection` props to the destructuring
+  limit,
+  faqsCollection,
 }: ProductFaqsProps) {
-  // TODO: Temporarily log the contents of `faqsCollection`
+  // TODO: Remove this after FAQ information is being rendered
+  console.log(faqsCollection);
 
   return (
     <section className="overflow-hidden @container">
