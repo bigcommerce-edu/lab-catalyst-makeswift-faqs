@@ -27,6 +27,7 @@ export const TeamMembers = forwardRef((
   }: Props, 
   ref: Ref<HTMLDivElement>
 ) => {
+  // TODO: Update this constant to be based on whether `thumbnailOrientation` is 'vertical' or 'horizontal'
   const vertical = true;
   const fadeInDuration = 500;
   
@@ -67,11 +68,19 @@ export const TeamMembers = forwardRef((
             vertical || "p-4"
           )}
         >
+          {/* TODO: Utilize the `itemsPerRow` prop for styling
+              - Add a `style` attribute to set a `--itemsPerRow` CSS variable based on the prop
+              - Add a dynamic `grid-cols` classname based on the CSS variable
+          */}
           <ul 
             className={clsx(
               vertical || "grid gap-x-4 gap-y-8 md:px-16 justify-items-center"
             )}
           >
+            {/* TODO: Update style classees for each <li> to use highlight and text color props 
+                  - Add a `style` attribute to set `--highlightColor` and `--textColor` CSS variables based on the appropriate props
+                  - Update the style class names to switch from hard-coded values to values based on the CSS variables
+            */}
             {members.map((member, index) => (
               <li 
                 className={clsx(
