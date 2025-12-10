@@ -12,9 +12,14 @@ runtime.registerComponent(
     type: 'img-compare-slider',
     label: 'Image Compare Slider',
     props: {
-      // TODO: Add the controls definition for the `image1` and `image2` props
-      //  - Both should use the `Image` control
-      //  - `format` should be `Image.Format.URL`, meaning the value passed to the component will be a simple URL string
+      image1: Image({
+        label: "Image 1",
+        format: Image.Format.URL,
+      }),
+      image2: Image({
+        label: "Image 2",
+        format: Image.Format.URL,
+      }),
     },
   }
 );
