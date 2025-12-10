@@ -18,9 +18,8 @@ runtime.registerComponent(MakeswiftProductFaqs, {
         props: {
           question: TextInput({ label: 'Question', defaultValue: 'Question' }),
           answer: TextInput({ label: 'Answer', defaultValue: 'Answer' }),
-          // TODO: Add definitions for the `richContent` and `content` props
-          //  - `richContent` should be a boolean, controlling whether to show a dynamic slot or an answer string
-          //  - `content` should be a `Slot` control, allowing editors to create free-form content
+          richContent: Checkbox({ label: 'Use rich content slot', defaultValue: false }),
+          content: Slot(),
         },
       }),
       getItemLabel: (section) => section?.question || 'Question',

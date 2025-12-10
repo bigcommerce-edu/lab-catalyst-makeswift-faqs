@@ -5,9 +5,7 @@ import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 export interface Faq {
   key: string;
   question: string;
-  // TODO: Update the type of `answer` to allow a `ReactNode` as well as a string
-  //  - This accounts for answers that were provided by Makeswift as a content slot
-  answer: string;
+  answer: string | ReactNode;
 }
 
 interface FaqsListProps {
