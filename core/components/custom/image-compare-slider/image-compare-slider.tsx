@@ -4,22 +4,32 @@ import { clsx } from 'clsx';
 import { forwardRef, Ref } from 'react';
 
 interface Props {
-
+  // TODO: Add the `className` prop
+  //  - The Makeswift control will combine all configured styles into a single class name, so this is a simple string
+  // TODO: Add the props that will be received from Makeswift controls
+  //  - `image1` and `image2` should both be strings containing the image URLs
 }
 
 export const ImageCompareSlider = forwardRef((
   { 
-
+    // TODO: Add `className` to the destructuring
+    // TODO: Add the new props to the destructuring
+    //  - These can still use the placeholder URLs as default values
   }: Props,
   ref: Ref<HTMLDivElement>
 ) => {
   return (
+    // TODO: Add the `className` prop to the collection of class names aggregated with `clsx`
     <div 
       className={clsx(
         "overflow-hidden",
       )} 
       ref={ref}
     >
+      {/* TODO: Replace the placeholder with the basic compare slider implementation 
+            - Use the `ReactCompareSlider` and `ReactCompareSliderImage` components from `react-compare-slider`
+            - For the initial implementation, use the placeholder image URL `https://placehold.co/600x400` for both images
+      */}
       Image Compare Slider
     </div>
   );
