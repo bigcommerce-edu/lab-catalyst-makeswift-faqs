@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/vibes/soul/primitives/button';
+import { toast } from '@/vibes/soul/primitives/toaster';
 
 import { getNextProductFaqs } from './_actions/get-next-product-faqs';
 import { Faq, FaqsList } from './faqs-list';
@@ -39,7 +40,9 @@ export function LoadMoreFaqs({
       setEndCursor(nextFaqData.endCursor);
       setFaqs(faqs.concat(nextFaqData.faqs));
     } catch (err) {
-      // TODO: Handle the error by using the built-in `toast` component with the error message
+      const error = err instanceof Error ? err.message : String(err);
+      
+      toast.error(error);
     }
 
     setPending(false);
