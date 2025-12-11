@@ -7,6 +7,8 @@ interface Member {
   name?: string;
   position?: string;
   image?: string;
+  // TODO: Add `content` prop
+  //  - This should be a `ReactNode`, as standard for the contents of a Makeswift slot
 }
 
 interface Props {
@@ -127,6 +129,7 @@ export const TeamMembers = forwardRef((
                   "--fadeDuration": `${fadeInDuration}ms`,
                 } as React.CSSProperties}
               >
+                {/* TODO: Swap the simple name display for the `member.content` slot */}
                 <h2 className="text-xl">{member.name}</h2>
               </div>
             )
