@@ -22,6 +22,9 @@ runtime.registerComponent(
     type: 'team-members',
     label: 'Team Members',
     props: {
+      // TODO: Add definition for `className` prop
+      //  - This should use the `Style` control, which will display multiple controls in the editor
+      //  - Use `properties` with the `Style.All` constant to allow all possible style controls
       members: List({
         label: 'Members',
         type: Group({
