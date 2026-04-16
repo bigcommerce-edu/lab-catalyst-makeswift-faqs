@@ -21,3 +21,13 @@ git clone git@github.com:bigcommerce/catalyst.git --branch @bigcommerce/catalyst
 ```
 
 After re-installing the framework, make sure an appropriate version of Node.js is installed according to `.nvmrc` and use `pnpm install` to install dependencies.
+
+## Lab Exercises
+
+| Tag Prefix | Description |
+|------------|-------------|
+| faqs | Product FAQs — Create a basic product FAQ display component |
+| faqs-enh | FAQ Enhancements — Add Load More, loading states, and error handling |
+| img-comp | Image Compare Slider — Build a custom Makeswift image comparison component |
+| team | Team Members — Build a Makeswift team members list component |
+| makeswift-faqs | Makeswift FAQs Integration — Register the FAQ component with Makeswift |
