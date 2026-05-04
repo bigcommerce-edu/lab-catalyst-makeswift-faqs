@@ -4,7 +4,7 @@ This project supports lab exercises for a Makeswift-enabled Product FAQs feature
 
 ## Prerequisites
 
-* Node.js 20 or later
+* Node.js 24 or later
 
 ### Product Data
 
