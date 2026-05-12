@@ -1,5 +1,6 @@
 node_modules
 dist
+settings.local.json
 .turbo
 .vscode/**/*
 !.vscode/settings.example.json
@@ -22,3 +23,5 @@ coverage/
 .unlighthouse
 .bigcommerce
 .mcp.json
+
+ARTIFACTS/*
