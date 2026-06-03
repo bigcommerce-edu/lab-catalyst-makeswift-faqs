@@ -1,0 +1,231 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { cache } from 'react';
+
+import { DynamicForm } from '@/vibes/soul/form/dynamic-form';
+import type { Field, FieldGroup } from '@/vibes/soul/form/dynamic-form/schema';
+import { Streamable } from '@/vibes/soul/lib/streamable';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { Breadcrumb } from '@/vibes/soul/sections/breadcrumbs';
+import { getSessionCustomerAccessToken } from '~/auth';
+import {
+  breadcrumbsTransformer,
+  truncateBreadcrumbs,
+} from '~/data-transformers/breadcrumbs-transformer';
+import { getMakeswiftPageMetadata } from '~/lib/makeswift';
+import { getRecaptchaSiteKey } from '~/lib/recaptcha';
+import { getMetadataAlternates } from '~/lib/seo/canonical';
+
+import { WebPage, WebPageContent } from '../_components/web-page';
+
+import { submitContactForm } from './_actions/submit-contact-form';
+import { getWebpageData } from './page-data';
+
+interface Props {
+  params: Promise<{ id: string; locale: string }>;
+  searchParams: Promise<{ success?: string }>;
+}
+
+interface ContactPage extends WebPage {
+  entityId: number;
+  contactFields: string[];
+}
+
+const fieldMapping = {
+  fullname: 'fullName',
+  companyname: 'companyName',
+  phone: 'phone',
+  orderno: 'orderNo',
+  rma: 'rma',
+} as const;
+
+type ContactField = keyof typeof fieldMapping;
+
+const getWebPage = cache(async (id: string, customerAccessToken?: string): Promise<ContactPage> => {
+  const data = await getWebpageData({ id: decodeURIComponent(id) }, customerAccessToken);
+  const webpage = data.node?.__typename === 'ContactPage' ? data.node : null;
+
+  if (!webpage) {
+    return notFound();
+  }
+
+  const breadcrumbs = breadcrumbsTransformer(webpage.breadcrumbs);
+
+  return {
+    entityId: webpage.entityId,
+    title: webpage.name,
+    path: webpage.path,
+    breadcrumbs,
+    content: webpage.htmlBody,
+    contactFields: webpage.contactFields,
+    seo: webpage.seo,
+  };
+});
+
+async function getWebPageBreadcrumbs(
+  id: string,
+  customerAccessToken?: string,
+): Promise<Breadcrumb[]> {
+  const t = await getTranslations('WebPages.ContactUs');
+
+  const webpage = await getWebPage(id, customerAccessToken);
+  const [, ...rest] = [...webpage.breadcrumbs].reverse();
+  const breadcrumbs = [
+    {
+      label: t('home'),
+      href: '/',
+    },
+    ...rest.reverse(),
+    {
+      label: webpage.title,
+      href: '#',
+    },
+  ];
+
+  return truncateBreadcrumbs(breadcrumbs, 5);
+}
+
+async function getWebPageWithSuccessContent(
+  id: string,
+  message: string,
+  customerAccessToken?: string,
+) {
+  const webpage = await getWebPage(id, customerAccessToken);
+
+  return {
+    ...webpage,
+    content: message,
+  };
+}
+
+async function getContactFields(id: string, customerAccessToken?: string) {
+  const t = await getTranslations('WebPages.ContactUs.Form');
+  const { entityId, path, contactFields } = await getWebPage(id, customerAccessToken);
+  const toGroupsOfTwo = (fields: Field[]) =>
+    fields.reduce<Array<FieldGroup<Field>>>((acc, _, i) => {
+      if (i % 2 === 0) {
+        acc.push(fields.slice(i, i + 2));
+      }
+
+      return acc;
+    }, []);
+
+  const pageIdField: Field = {
+    id: 'pageId',
+    name: 'pageId',
+    type: 'hidden',
+    label: 'Page ID',
+    defaultValue: String(entityId),
+  };
+
+  // Used for redirect to self with query params
+  const pagePathField: Field = {
+    id: 'pagePath',
+    name: 'pagePath',
+    type: 'hidden',
+    label: 'Page Path',
+    defaultValue: path,
+  };
+
+  const emailField: Field = {
+    id: 'email',
+    name: 'email',
+    label: `${t('email')} *`,
+    type: 'email',
+    required: true,
+  };
+
+  const commentsField: Field = {
+    id: 'comments',
+    name: 'comments',
+    label: `${t('comments')} *`,
+    type: 'textarea',
+    required: true,
+  };
+
+  const optionalFields = contactFields
+    .filter((field): field is ContactField => Object.hasOwn(fieldMapping, field))
+    .map<Field>((field) => ({
+      id: field,
+      name: field,
+      label: t(fieldMapping[field]),
+      type: 'text',
+      required: false,
+    }));
+
+  return [
+    ...toGroupsOfTwo([emailField, ...optionalFields]),
+    commentsField,
+    pageIdField,
+    pagePathField,
+  ];
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id, locale } = await params;
+  const customerAccessToken = await getSessionCustomerAccessToken();
+  const webpage = await getWebPage(id, customerAccessToken);
+  const makeswiftMetadata = await getMakeswiftPageMetadata({ path: webpage.path, locale });
+  const { pageTitle, metaDescription, metaKeywords } = webpage.seo;
+
+  return {
+    title: makeswiftMetadata?.title || pageTitle || webpage.title,
+    ...((makeswiftMetadata?.description || metaDescription) && {
+      description: makeswiftMetadata?.description || metaDescription,
+    }),
+    ...(metaKeywords && { keywords: metaKeywords.split(',') }),
+    ...(webpage.path && {
+      alternates: await getMetadataAlternates({ path: webpage.path, locale }),
+    }),
+  };
+}
+
+export default async function ContactPage({ params, searchParams }: Props) {
+  const { id, locale } = await params;
+  const { success } = await searchParams;
+  const customerAccessToken = await getSessionCustomerAccessToken();
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations('WebPages.ContactUs.Form');
+
+  if (success === 'true') {
+    return (
+      <WebPageContent
+        breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id, customerAccessToken))}
+        webPage={Streamable.from(() =>
+          getWebPageWithSuccessContent(id, t('success'), customerAccessToken),
+        )}
+      >
+        <ButtonLink
+          className="mt-8 @2xl:mt-12 @4xl:mt-16"
+          href="/"
+          size="large"
+          type="submit"
+          variant="primary"
+        >
+          {t('successCta')}
+        </ButtonLink>
+      </WebPageContent>
+    );
+  }
+
+  const recaptchaSiteKey = await getRecaptchaSiteKey();
+
+  return (
+    <WebPageContent
+      breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id, customerAccessToken))}
+      webPage={Streamable.from(() => getWebPage(id, customerAccessToken))}
+    >
+      <div className="mt-8 @2xl:mt-12 @4xl:mt-16">
+        <DynamicForm
+          action={submitContactForm}
+          fields={await getContactFields(id, customerAccessToken)}
+          recaptchaSiteKey={recaptchaSiteKey}
+          submitLabel={t('cta')}
+        />
+      </div>
+    </WebPageContent>
+  );
+}
