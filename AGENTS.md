@@ -19,15 +19,15 @@ This repository maintains two kinds of history **separately**:
 
 - The **project version** (plain semver, separate from the Catalyst framework version) is held in `package.json`'s `version` field and tagged on the tip of the corresponding progressive history.
 - Each version has a changelog entry in `changelogs/<version>.md`.
-- **Metadata at the end**: the project-version bump, the changelog entry, and the tutorial-doc updates are folded into the final commit(s) of each rebuilt progressive history (amended on each rebuild rather than accumulating new commits).
+- **Metadata at the end**: the project-version bump and the addition of changelog entries and tutorial docs are folded into the final commit(s) of each rebuilt progressive history (amended on each rebuild rather than accumulating new commits).
 - The lab steps and GitHub diff links live in `docs/TUTORIAL.md`, which carries a "Based on version X" banner matching the latest progressive history.
 
 ## Tag Conventions
 
 - **Project-version tag**: plain semver (e.g. `1.0.0`) at a progressive history's tip. Created fresh per history; never migrated.
 - **Framework anchor**: `framework-<semver>` (e.g. `framework-1.7.0`) marks a base-framework release point. Permanent; never migrated.
-- **Step tags**: `<prefix>-NN-pre` / `<prefix>-NN-post`, plus `<prefix>-start` / `<prefix>-complete`. Migrated onto a new history when publishing.
-- **eLearning tags**: `e-` / `bcu-` prefixed. Migrated by the eLearning publish.
+- **Step tags**: `<prefix>-NN-pre` / `<prefix>-NN-post`, plus `<prefix>-start` / `<prefix>-complete`. Migrated onto a new history by the Main Tags publish.
+- **eLearning tags**: `e-` prefixed. Migrated by the eLearning publish.
 
 ## Commit History Structure
 
@@ -46,11 +46,11 @@ This repository maintains two kinds of history **separately**:
 
 ### Lab Step Breakdown
 
-Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a `<tag>-post` (implementation) commit.
+Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a `<tag>-post` (implementation) commit. eLearning state is represented by the same base tags in `e-<tag>-pre`/`e-<tag>-post` format.
 
 **Catalyst Lab 1 — Basic Product FAQs (`faqs`)** — start: `catalyst-start`, complete: `faqs-complete`
 
-| Step | Tag | Description |
+| Step | Tag Base | Description |
 | ---- | --- | ----------- |
 | 1 | `faqs-01` | Add ProductFaqs component to product page |
 | 2 | `faqs-02` | Add product FAQ metafields query |
@@ -58,7 +58,7 @@ Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a 
 
 **Catalyst Lab 2 — FAQ Enhancements (`faqs-enh`)** — start: `faqs-enh-start`, complete: `faqs-enh-complete`
 
-| Step | Tag | Description |
+| Step | Tag Base | Description |
 | ---- | --- | ----------- |
 | 1a | `faqs-enh-01a` | Implement Accordions for product FAQs |
 | 1b | `faqs-enh-01b` | Override accordion title hover text for FAQs |
@@ -70,7 +70,7 @@ Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a 
 
 **Makeswift Lab 1 — Image Compare Slider Component (`img-comp`)** — start: `makeswift-start`, complete: `img-comp-complete`
 
-| Step | Tag | Description |
+| Step | Tag Base | Description |
 | ---- | --- | ----------- |
 | 1 | `img-comp-01` | Register Image Compare Slider component |
 | 2 | `img-comp-02` | Use react-compare-slider in component placeholder |
@@ -79,7 +79,7 @@ Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a 
 
 **Makeswift Lab 2 — Team Members Component (`team`)** — start: `team-start`, complete: `team-complete`
 
-| Step | Tag | Description |
+| Step | Tag Base | Description |
 | ---- | --- | ----------- |
 | 1 | `team-01` | Register Team Members component |
 | 2 | `team-02` | Add List control for team members |
@@ -90,7 +90,7 @@ Each step is a `<tag>-pre` (TODO placeholders) commit immediately followed by a 
 
 **Makeswift Lab 3 — Integrate Product FAQs with Makeswift (`makeswift-faqs`)** — start: `makeswift-faqs-start`, complete: `makeswift-faqs-complete`
 
-| Step | Tag | Description |
+| Step | Tag Base | Description |
 | ---- | --- | ----------- |
 | 1 | `makeswift-faqs-01` | Embed Product FAQs component with Makeswift |
 | 2 | `makeswift-faqs-02` | Add arbitrary FAQs as Makeswift props |
