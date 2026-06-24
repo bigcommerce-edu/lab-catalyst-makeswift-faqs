@@ -17,7 +17,7 @@ runtime.registerComponent(MakeswiftProductFaqs, {
         label: 'FAQ Details',
         props: {
           question: TextInput({ label: 'Question', defaultValue: 'Question' }),
-          answer: TextInput({ label: 'Answer', defaultValue: 'Answer' }),
+          answer: TextInput({ label: 'Answer', defaultValue: '' }),
           content: Slot(),
         },
       }),
