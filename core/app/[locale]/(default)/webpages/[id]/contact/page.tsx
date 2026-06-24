@@ -8,7 +8,6 @@ import type { Field, FieldGroup } from '@/vibes/soul/form/dynamic-form/schema';
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Breadcrumb } from '@/vibes/soul/sections/breadcrumbs';
-import { getSessionCustomerAccessToken } from '~/auth';
 import {
   breadcrumbsTransformer,
   truncateBreadcrumbs,
@@ -42,8 +41,8 @@ const fieldMapping = {
 
 type ContactField = keyof typeof fieldMapping;
 
-const getWebPage = cache(async (id: string, customerAccessToken?: string): Promise<ContactPage> => {
-  const data = await getWebpageData({ id: decodeURIComponent(id) }, customerAccessToken);
+const getWebPage = cache(async (id: string): Promise<ContactPage> => {
+  const data = await getWebpageData({ id: decodeURIComponent(id) });
   const webpage = data.node?.__typename === 'ContactPage' ? data.node : null;
 
   if (!webpage) {
@@ -63,14 +62,11 @@ const getWebPage = cache(async (id: string, customerAccessToken?: string): Promi
   };
 });
 
-async function getWebPageBreadcrumbs(
-  id: string,
-  customerAccessToken?: string,
-): Promise<Breadcrumb[]> {
+async function getWebPageBreadcrumbs(id: string): Promise<Breadcrumb[]> {
   const t = await getTranslations('WebPages.ContactUs');
 
-  const webpage = await getWebPage(id, customerAccessToken);
-  const [, ...rest] = [...webpage.breadcrumbs].reverse();
+  const webpage = await getWebPage(id);
+  const [, ...rest] = webpage.breadcrumbs.reverse();
   const breadcrumbs = [
     {
       label: t('home'),
@@ -86,12 +82,8 @@ async function getWebPageBreadcrumbs(
   return truncateBreadcrumbs(breadcrumbs, 5);
 }
 
-async function getWebPageWithSuccessContent(
-  id: string,
-  message: string,
-  customerAccessToken?: string,
-) {
-  const webpage = await getWebPage(id, customerAccessToken);
+async function getWebPageWithSuccessContent(id: string, message: string) {
+  const webpage = await getWebPage(id);
 
   return {
     ...webpage,
@@ -99,9 +91,9 @@ async function getWebPageWithSuccessContent(
   };
 }
 
-async function getContactFields(id: string, customerAccessToken?: string) {
+async function getContactFields(id: string) {
   const t = await getTranslations('WebPages.ContactUs.Form');
-  const { entityId, path, contactFields } = await getWebPage(id, customerAccessToken);
+  const { entityId, path, contactFields } = await getWebPage(id);
   const toGroupsOfTwo = (fields: Field[]) =>
     fields.reduce<Array<FieldGroup<Field>>>((acc, _, i) => {
       if (i % 2 === 0) {
@@ -164,8 +156,7 @@ async function getContactFields(id: string, customerAccessToken?: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params;
-  const customerAccessToken = await getSessionCustomerAccessToken();
-  const webpage = await getWebPage(id, customerAccessToken);
+  const webpage = await getWebPage(id);
   const makeswiftMetadata = await getMakeswiftPageMetadata({ path: webpage.path, locale });
   const { pageTitle, metaDescription, metaKeywords } = webpage.seo;
 
@@ -184,7 +175,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContactPage({ params, searchParams }: Props) {
   const { id, locale } = await params;
   const { success } = await searchParams;
-  const customerAccessToken = await getSessionCustomerAccessToken();
 
   setRequestLocale(locale);
 
@@ -193,10 +183,8 @@ export default async function ContactPage({ params, searchParams }: Props) {
   if (success === 'true') {
     return (
       <WebPageContent
-        breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id, customerAccessToken))}
-        webPage={Streamable.from(() =>
-          getWebPageWithSuccessContent(id, t('success'), customerAccessToken),
-        )}
+        breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id))}
+        webPage={Streamable.from(() => getWebPageWithSuccessContent(id, t('success')))}
       >
         <ButtonLink
           className="mt-8 @2xl:mt-12 @4xl:mt-16"
@@ -215,13 +203,13 @@ export default async function ContactPage({ params, searchParams }: Props) {
 
   return (
     <WebPageContent
-      breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id, customerAccessToken))}
-      webPage={Streamable.from(() => getWebPage(id, customerAccessToken))}
+      breadcrumbs={Streamable.from(() => getWebPageBreadcrumbs(id))}
+      webPage={Streamable.from(() => getWebPage(id))}
     >
       <div className="mt-8 @2xl:mt-12 @4xl:mt-16">
         <DynamicForm
           action={submitContactForm}
-          fields={await getContactFields(id, customerAccessToken)}
+          fields={await getContactFields(id)}
           recaptchaSiteKey={recaptchaSiteKey}
           submitLabel={t('cta')}
         />

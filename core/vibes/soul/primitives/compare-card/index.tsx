@@ -33,8 +33,6 @@ export interface CompareCardProps {
   noOtherDetailsLabel?: string;
   viewOptionsLabel?: string;
   preorderLabel?: string;
-  showMoreLabel?: string;
-  showLessLabel?: string;
   addToCartAction?: CompareAddToCartAction;
   imageSizes?: string;
 }
@@ -68,8 +66,6 @@ export function CompareCard({
   noOtherDetailsLabel = 'There are no other details.',
   viewOptionsLabel = 'View options',
   preorderLabel = 'Preorder',
-  showMoreLabel = 'Show more',
-  showLessLabel = 'Show less',
   imageSizes,
 }: CompareCardProps) {
   return (
@@ -114,7 +110,7 @@ export function CompareCard({
           {descriptionLabel}
         </div>
         {product.description != null && product.description !== '' ? (
-          <Reveal hideLabel={showLessLabel} showLabel={showMoreLabel}>
+          <Reveal>
             <div className="prose prose-sm [&>div>*:first-child]:mt-0">{product.description}</div>
           </Reveal>
         ) : (
@@ -128,7 +124,7 @@ export function CompareCard({
           <div className="font-[family-name:var(--compare-card-font-family-secondary,var(--font-family-mono))] text-xs font-normal uppercase text-[var(--compare-card-label,hsl(var(--foreground)))]">
             {otherDetailsLabel}
           </div>
-          <Reveal hideLabel={showLessLabel} showLabel={showMoreLabel}>
+          <Reveal>
             <dl className="grid grid-cols-2 gap-1 text-xs font-normal text-[var(--compare-card-field,hsl(var(--foreground)))]">
               {product.customFields.map((field, index) => (
                 <Fragment key={index}>

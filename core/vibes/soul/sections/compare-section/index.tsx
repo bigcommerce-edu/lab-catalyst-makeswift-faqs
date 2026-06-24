@@ -33,8 +33,6 @@ interface CompareSectionProps {
   noOtherDetailsLabel?: string;
   viewOptionsLabel?: string;
   preorderLabel?: string;
-  showMoreLabel?: string;
-  showLessLabel?: string;
   placeholderCount?: number;
   addToCartAction?: CompareAddToCartAction;
 }
@@ -74,8 +72,6 @@ export function CompareSection({
   noOtherDetailsLabel,
   viewOptionsLabel,
   preorderLabel,
-  showMoreLabel,
-  showLessLabel,
   placeholderCount,
 }: CompareSectionProps) {
   return (
@@ -133,8 +129,6 @@ export function CompareSection({
                         preorderLabel={preorderLabel}
                         product={product}
                         ratingLabel={ratingLabel}
-                        showLessLabel={showLessLabel}
-                        showMoreLabel={showMoreLabel}
                         viewOptionsLabel={viewOptionsLabel}
                       />
                     </CarouselItem>

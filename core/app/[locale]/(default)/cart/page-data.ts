@@ -28,10 +28,6 @@ export const PhysicalItemFragment = graphql(`
       currencyCode
       value
     }
-    discountedAmount {
-      currencyCode
-      value
-    }
     selectedOptions {
       __typename
       entityId
@@ -88,10 +84,6 @@ export const DigitalItemFragment = graphql(`
       value
     }
     salePrice {
-      currencyCode
-      value
-    }
-    discountedAmount {
       currencyCode
       value
     }

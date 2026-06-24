@@ -112,7 +112,7 @@ export default async function Cart({ params }: Props) {
       return {
         typename: item.__typename,
         id: item.entityId,
-        title: t('GiftCertificate.giftCertificate'),
+        title: item.name,
         subtitle: `${t('GiftCertificate.to')}: ${item.recipient.name} (${item.recipient.email})${item.message ? `, ${t('GiftCertificate.message')}: ${item.message}` : ''}`,
         quantity: 1,
         price: format.number(item.amount.value, {
@@ -217,13 +217,6 @@ export default async function Cart({ params }: Props) {
   const totalCouponDiscount =
     checkout?.coupons.reduce((sum, coupon) => sum + coupon.discountedAmount.value, 0) ?? 0;
 
-  const totalLineItemDiscount = [
-    ...cart.lineItems.physicalItems,
-    ...cart.lineItems.digitalItems,
-  ].reduce((sum, item) => sum + item.discountedAmount.value, 0);
-
-  const totalDiscount = cart.discountedAmount.value + totalLineItemDiscount;
-
   const giftCertificatesSummary =
     checkout?.giftCertificates.reduce<Array<{ code: string; used: number }>>((acc, c) => {
       acc.push({
@@ -290,10 +283,10 @@ export default async function Cart({ params }: Props) {
                   currency: cart.currencyCode,
                 }),
               },
-              totalDiscount > 0
+              cart.discountedAmount.value > 0
                 ? {
                     label: t('CheckoutSummary.discounts'),
-                    value: `-${format.number(totalDiscount, {
+                    value: `-${format.number(cart.discountedAmount.value, {
                       style: 'currency',
                       currency: cart.currencyCode,
                     })}`,

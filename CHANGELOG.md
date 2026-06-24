@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.2-test
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.6.3_
+
+### Summary
+
+Test progressive history rebuilt on Catalyst 1.6.3 (a downgrade from 1.7.0) to exercise the `bcedu-lab-upgrade` workflow. No lab code changes; the framework base was swapped and lab history replayed on top.
+
+### Changes
+
+- Re-rooted the progressive history onto a clean Catalyst (`@bigcommerce/catalyst-makeswift`) 1.6.3 install (previously 1.7.0).
+- Regenerated the `react-compare-slider` install (`^4.0.0`, unchanged — already the latest) against the new base lockfile.
+
 ## 1.0.1
 
 _Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_

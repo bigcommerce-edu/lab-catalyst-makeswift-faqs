@@ -20,7 +20,6 @@ export default async function OrderDetails(props: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations('Account.Orders.Details');
-  const tGiftCertificate = await getTranslations('Cart.GiftCertificate');
   const format = await getFormatter();
 
   const streamableOrder = Streamable.from(async () => {
@@ -30,7 +29,7 @@ export default async function OrderDetails(props: Props) {
       notFound();
     }
 
-    return orderDetailsTransformer(order, t, format, tGiftCertificate);
+    return orderDetailsTransformer(order, t, format);
   });
 
   return (

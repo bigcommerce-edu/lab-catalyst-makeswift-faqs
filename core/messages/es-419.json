@@ -138,7 +138,7 @@
             "searchResults": "Resultados de búsqueda para",
             "subCategories": "Categorías",
             "Breadcrumbs": {
-                "home": "Inicio",
+                "home": "Página de inicio",
                 "search": "Buscar"
             },
             "Empty": {
@@ -404,7 +404,7 @@
     },
     "Blog": {
         "title": "Blog",
-        "home": "Inicio",
+        "home": "Página de inicio",
         "Empty": {
             "title": "No se encontraron publicaciones de blog",
             "subtitle": "Vuelve a consultar más tarde para obtener más contenido"
@@ -500,8 +500,6 @@
         "otherDetails": "Otros detalles",
         "noOtherDetails": "No hay otros detalles.",
         "viewOptions": "Opciones de visualización",
-        "showMore": "Mostrar más",
-        "showLess": "Mostrar menos",
         "successMessage": "{cartItems, plural, =1 {1 artículo} other {# artículos}} agregado(s) a <cartLink>tu carrito</cartLink>",
         "missingCart": "Carrito no encontrado. Vuelva a intentarlo más tarde.",
         "unknownError": "Error desconocido. Vuelva a intentarlo más tarde."
@@ -580,10 +578,10 @@
     },
     "WebPages": {
         "Normal": {
-            "home": "Inicio"
+            "home": "Página de inicio"
         },
         "ContactUs": {
-            "home": "Inicio",
+            "home": "Página de inicio",
             "Form": {
                 "success": "Gracias por ponerte en contacto. Nos comunicaremos contigo pronto.",
                 "successCta": "Seguir comprando",
@@ -618,7 +616,7 @@
     },
     "Components": {
         "Header": {
-            "home": "Inicio",
+            "home": "Página de inicio",
             "toggleNavigation": "Alternar navegación",
             "Icons": {
                 "account": "Perfil",
@@ -643,7 +641,7 @@
             }
         },
         "Footer": {
-            "home": "Inicio",
+            "home": "Página de inicio",
             "contactUs": "Contacto",
             "socialMediaLinks": "Enlaces a redes sociales",
             "categories": "Categorías",

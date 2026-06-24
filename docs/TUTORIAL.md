@@ -1,6 +1,6 @@
 # Lab Tutorial: Catalyst/Makeswift Product FAQs
 
-> **Based on version 1.0.0** — this tutorial corresponds to the latest progressive history tagged `1.0.0`.
+> **Based on version 1.0.2-test** — this tutorial corresponds to the latest progressive history tagged `1.0.2-test`.
 
 This document lists the lab exercises and their step-by-step diffs. Each step links to a GitHub comparison between the step's `*-pre` (TODO placeholders) and `*-post` (implemented) tags.
 

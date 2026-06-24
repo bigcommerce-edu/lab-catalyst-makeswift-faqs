@@ -121,14 +121,12 @@ export default async function Brand(props: Props) {
 
     const loadSearchParams = await createBrandSearchParamsLoader(slug, customerAccessToken);
     const parsedSearchParams = loadSearchParams?.(searchParams) ?? {};
-    const sort = typeof searchParams.sort === 'string' ? searchParams.sort : 'featured';
 
     const search = await fetchFacetedSearch(
       {
         ...searchParams,
         ...parsedSearchParams,
         brand: [slug],
-        sort,
       },
       currencyCode,
       customerAccessToken,
