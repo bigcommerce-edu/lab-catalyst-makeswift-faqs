@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_
+
+### Summary
+
+Affects only commit history. Standardized the way TODOs are introduced in step history and consolidated metadata to end of history.
+
 ## 1.0.0
 
 _Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_
