@@ -32,7 +32,6 @@ export const ProductFaqsContextProvider = (
 interface ProductFaq {
   question: string;
   answer: string;
-  richContent: boolean;
   content: ReactNode;
 }
 
@@ -61,7 +60,8 @@ export const MakeswiftProductFaqs = forwardRef(
         return {
           key: index.toString(),
           question: faq.question,
-          answer: (faq.richContent) ? faq.content : faq.answer,
+          // Fall back to the rich content Slot when no text answer is provided.
+          answer: (faq.answer.trim() === '') ? faq.content : faq.answer,
         };
       }
     );
