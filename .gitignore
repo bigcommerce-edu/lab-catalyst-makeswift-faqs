@@ -54,3 +54,17 @@ build-config.json
 # OpenNext
 .open-next
 .wrangler
+
+# lab project
+settings.local.json
+.turbo
+.idea
+.tests
+*graphql.d.ts
+*.graphql
+.history
+.unlighthouse
+.bigcommerce
+.mcp.json
+
+ARTIFACTS/*
