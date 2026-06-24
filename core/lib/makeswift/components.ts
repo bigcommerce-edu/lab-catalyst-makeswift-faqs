@@ -16,3 +16,4 @@ import './components/slideshow/register';
 import './components/sticky-sidebar/register';
 
 import '~/components/custom/image-compare-slider/register';
+// TODO: Add the registration of `team-members`
