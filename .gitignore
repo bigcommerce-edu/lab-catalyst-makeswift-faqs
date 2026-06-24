@@ -57,3 +57,16 @@ build-config.json
 
 # Catalyst CLI config
 .bigcommerce
+
+# lab project
+settings.local.json
+.turbo
+.idea
+.tests
+*graphql.d.ts
+*.graphql
+.history
+.unlighthouse
+.mcp.json
+
+ARTIFACTS/*
