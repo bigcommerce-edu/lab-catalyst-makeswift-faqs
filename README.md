@@ -30,3 +30,7 @@ Body:
     "permission_set": "read_and_sf_access"
 }
 ```
+
+## Lab Exercises
+
+The lab exercises and their step-by-step diffs are documented in [docs/TUTORIAL.md](docs/TUTORIAL.md).
