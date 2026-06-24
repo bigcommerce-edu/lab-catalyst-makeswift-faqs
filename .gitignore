@@ -62,3 +62,16 @@ build-config.json
 # written by `npm run generate`. Commit them, so lint, typecheck and editor
 # tooling work without store credentials. See "GraphQL Schema and Types" in
 # README.md before adding them here.
+
+# lab project
+settings.local.json
+.turbo
+.idea
+.tests
+*graphql.d.ts
+*.graphql
+.history
+.unlighthouse
+.mcp.json
+
+ARTIFACTS/*
