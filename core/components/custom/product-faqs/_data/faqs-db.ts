@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-import { DatabaseSync } from 'node:sqlite';
 import { z } from 'zod';
 
 /**
@@ -11,6 +10,15 @@ import { z } from 'zod';
  * the feature depends only on the small surface exported here, so the storage
  * backend can change without touching the components or server actions.
  */
+
+// `node:sqlite` is an experimental builtin that Turbopack/webpack cannot
+// externalize through a normal `import` (it falls back to `require()` in an
+// ESM context and throws "require is not defined"). Resolving it through
+// `process.getBuiltinModule` is a plain runtime call the bundler never
+// rewrites, so the module loads correctly on the Node.js runtime.
+const { DatabaseSync } = process.getBuiltinModule('node:sqlite');
+
+type Database = InstanceType<typeof DatabaseSync>;
 
 const FaqRow = z.object({
   id: z.number(),
@@ -73,9 +81,9 @@ const SEED_FAQS: Array<Omit<FaqRow, 'id'>> = [
   },
 ];
 
-let database: DatabaseSync | undefined;
+let database: Database | undefined;
 
-const createSchema = (db: DatabaseSync) => {
+const createSchema = (db: Database) => {
   db.exec(`
     CREATE TABLE IF NOT EXISTS product_faqs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,7 +95,7 @@ const createSchema = (db: DatabaseSync) => {
   `);
 };
 
-const seedFaqs = (db: DatabaseSync) => {
+const seedFaqs = (db: Database) => {
   const { count } = z
     .object({ count: z.number() })
     .parse(db.prepare('SELECT COUNT(*) AS count FROM product_faqs').get());
@@ -108,7 +116,7 @@ const seedFaqs = (db: DatabaseSync) => {
 
 // Lazily open the database (and ensure the schema and seed data exist) the
 // first time a query is run, reusing the same connection thereafter.
-const getDatabase = (): DatabaseSync => {
+const getDatabase = (): Database => {
   if (!database) {
     database = new DatabaseSync(DB_PATH);
     createSchema(database);
