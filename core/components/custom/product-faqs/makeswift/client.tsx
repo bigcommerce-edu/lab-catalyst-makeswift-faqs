@@ -5,7 +5,6 @@ import React, {
   createContext,
   forwardRef,
   type PropsWithChildren,
-  type ReactNode,
   type Ref,
   useContext,
 } from 'react';
@@ -13,6 +12,8 @@ import React, {
 import { Stream } from '@/vibes/soul/lib/streamable';
 
 import { ProductFaqs, ProductFaqsSkeleton } from '../index';
+
+import { type AuthoredFaq, combineFaqsCollections, formatAuthoredFaqs } from './merge-faqs';
 
 export type ContextProps = ComponentPropsWithoutRef<typeof ProductFaqs>;
 
@@ -29,14 +30,8 @@ export const ProductFaqsContextProvider = (
   <ProductFaqsContext.Provider value={value}>{children}</ProductFaqsContext.Provider>
 );
 
-interface ProductFaq {
-  question: string;
-  answer: string;
-  content: ReactNode;
-}
-
 interface ProductFaqsProps {
-  faqs: ProductFaq[];
+  faqs: AuthoredFaq[];
   showOriginal: boolean;
 }
 
@@ -55,29 +50,17 @@ export const MakeswiftProductFaqs = forwardRef(
   ) => {
     const { productId, limit, faqsCollection: streamableFaqsCollection, heading } = useContext(ProductFaqsContext);
 
-    const formattedFaqs = faqs.map(
-      (faq, index) => {
-        return {
-          key: index.toString(),
-          question: faq.question,
-          // Fall back to the rich content Slot when no text answer is provided.
-          answer: (faq.answer.trim() === '') ? faq.content : faq.answer,
-        };
-      }
-    );
+    const formattedFaqs = formatAuthoredFaqs(faqs);
 
     return (
       <Stream fallback={<ProductFaqsSkeleton />} value={streamableFaqsCollection}>
       {(passedFaqsCollection) => {
 
-        const allFaqs = formattedFaqs.concat(
-          showOriginal ? passedFaqsCollection.faqs : []
+        const allFaqsCollection = combineFaqsCollections(
+          formattedFaqs,
+          passedFaqsCollection,
+          showOriginal
         );
-
-        const allFaqsCollection = {
-          endCursor: showOriginal ? passedFaqsCollection.endCursor : null,
-          faqs: allFaqs,
-        };
 
         return (
           <div ref={ref}>

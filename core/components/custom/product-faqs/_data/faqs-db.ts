@@ -114,34 +114,46 @@ const seedFaqs = (db: Database) => {
   });
 };
 
-// Lazily open the database (and ensure the schema and seed data exist) the
-// first time a query is run, reusing the same connection thereafter.
+/**
+ * Open a SQLite database at `path`, ensuring the schema and seed data exist.
+ * Pass `:memory:` (or a temp path) in tests to get an isolated, pre-seeded
+ * database without touching the real `faqs.db`.
+ *
+ * @param {string} path - The database file path; defaults to the project DB.
+ * @returns {Database} A ready-to-query database connection.
+ */
+const createFaqsDatabase = (path: string = DB_PATH): Database => {
+  const db = new DatabaseSync(path);
+
+  createSchema(db);
+  seedFaqs(db);
+
+  return db;
+};
+
+// Lazily open the database the first time a query is run, reusing the same
+// connection thereafter.
 const getDatabase = (): Database => {
   if (!database) {
-    database = new DatabaseSync(DB_PATH);
-    createSchema(database);
-    seedFaqs(database);
+    database = createFaqsDatabase();
   }
 
   return database;
 };
 
 /**
- * Read a page of FAQs for a product and locale, ordered by insertion. One extra
- * row beyond `limit` is fetched so the caller can tell whether another page
- * exists without a separate count query.
+ * Read a page of FAQs for a product and locale from `db`, ordered by insertion.
+ * One extra row beyond `limit` is fetched so the caller can tell whether
+ * another page exists without a separate count query.
  *
+ * @param {Database} db - The database connection to read from.
  * @param {QueryFaqsParams} params - The product, locale, page size and offset.
  * @returns {QueryFaqsResult} The page of FAQ rows and whether more remain.
  */
-const queryProductFaqs = ({
-  productId,
-  locale,
-  limit,
-  offset,
-}: QueryFaqsParams): QueryFaqsResult => {
-  const db = getDatabase();
-
+const queryFaqs = (
+  db: Database,
+  { productId, locale, limit, offset }: QueryFaqsParams
+): QueryFaqsResult => {
   const rows = z.array(FaqRow).parse(
     db
       .prepare(
@@ -160,4 +172,21 @@ const queryProductFaqs = ({
   };
 };
 
-export { type FaqRow, type QueryFaqsParams, type QueryFaqsResult, queryProductFaqs };
+/**
+ * Read a page of FAQs from the shared application database.
+ *
+ * @param {QueryFaqsParams} params - The product, locale, page size and offset.
+ * @returns {QueryFaqsResult} The page of FAQ rows and whether more remain.
+ */
+const queryProductFaqs = (params: QueryFaqsParams): QueryFaqsResult =>
+  queryFaqs(getDatabase(), params);
+
+export {
+  type FaqRow,
+  type QueryFaqsParams,
+  type QueryFaqsResult,
+  createFaqsDatabase,
+  queryFaqs,
+  queryProductFaqs,
+  seedFaqs,
+};
