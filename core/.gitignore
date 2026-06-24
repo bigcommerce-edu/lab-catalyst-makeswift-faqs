@@ -54,3 +54,9 @@ build-config.json
 # OpenNext
 .open-next
 .wrangler
+
+# Local SQLite database (generated and seeded at runtime)
+faqs.db
+faqs.db-journal
+faqs.db-wal
+faqs.db-shm
