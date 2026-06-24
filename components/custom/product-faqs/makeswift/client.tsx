@@ -38,6 +38,7 @@ interface ProductFaq {
 
 interface ProductFaqsProps {
   faqs: ProductFaq[];
+  // TODO: Add the `showOriginal` prop, which should be a boolean
 }
 
 /**
@@ -49,6 +50,7 @@ export const MakeswiftProductFaqs = forwardRef(
   (
     {
       faqs,
+      // TODO: Add the `showOriginal` prop to the destructuring
     }: ProductFaqsProps,
     ref: Ref<HTMLDivElement>,
   ) => {
@@ -69,10 +71,14 @@ export const MakeswiftProductFaqs = forwardRef(
       {(passedFaqsCollection) => {
 
         const allFaqs = formattedFaqs.concat(
+          // TODO: Whether to concatentate `passedFaqsCollection.faqs` should now be conditional
+          //  - If `showOriginal` is false, we're not showing metafield-based FAQs at all, so the final list should just be the original `formattedFaqs`
           passedFaqsCollection.faqs
         );
 
         const allFaqsCollection = {
+          // TODO: Whether we include the `endCursor` should now be conditional
+          //  - If `showOriginal` is false, we're not showing metafield-based FAQs at all, so no `endCursor` should be included
           endCursor: passedFaqsCollection.endCursor,
           faqs: allFaqs,
         };
@@ -84,6 +90,7 @@ export const MakeswiftProductFaqs = forwardRef(
               heading={heading}
               limit={limit} 
               productId={productId} 
+              // TODO: Update `showLoadMore` to be conditional based on `showOriginal`
               showLoadMore={true}
             />
           </div>
