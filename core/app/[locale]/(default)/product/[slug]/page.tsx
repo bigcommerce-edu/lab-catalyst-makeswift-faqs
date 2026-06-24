@@ -553,6 +553,13 @@ export default async function Product({ params, searchParams }: Props) {
   const tFaqs = await getTranslations('Product.FAQ');
   const faqsHeading = tFaqs('heading');
 
+  // TODO: Establish a "page" limit for FAQ metafields, for use in the initial fetch and to pass down to components
+
+  // TODO: Use `getProductFaqMetafields` to fetch the initial FAQ metafields
+  //  - Pass the `productId`, `locale`, and `limit`
+  //  - Await the response
+  //  - The response will be a "collection" that includes both the `faqs` list and the `endCursor`
+
   return (
     <>
       <ProductAnalyticsProvider data={streamableAnalyticsData}>
@@ -601,6 +608,10 @@ export default async function Product({ params, searchParams }: Props) {
         />
       </ProductAnalyticsProvider>
 
+      {/* TODO: Add new props
+            - Pass the fetched collection to the `faqsCollection` prop 
+            - Pass the `limit` prop so the component can use it for further fetches
+      */}
       <ProductFaqs
         heading={faqsHeading}
         productId={productId}
