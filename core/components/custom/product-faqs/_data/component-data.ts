@@ -2,6 +2,8 @@ import { cache } from 'react';
 
 import { Faq } from '../faqs-list';
 
+import { queryProductFaqs } from './faqs-db';
+
 interface FaqsCollection {
   endCursor: string | null;
   faqs: Faq[];
@@ -14,11 +16,37 @@ interface Variables {
   after?: string | null;
 }
 
+const DEFAULT_LIMIT = 10;
+
+// FAQ pages are addressed by an opaque cursor. Here that cursor is simply the
+// row offset encoded as a string, mirroring the relay-style pagination the
+// component was originally built against.
+const decodeCursor = (after?: string | null): number => {
+  const offset = Number(after);
+
+  return Number.isInteger(offset) && offset >= 0 ? offset : 0;
+};
+
 const getProductFaqMetafields = cache(
-  async (_variables: Variables): Promise<FaqsCollection> => {
-    // TODO: Fetch the product FAQs for the given product and locale from the
-    // local SQLite database, applying cursor-based pagination.
-    return { endCursor: null, faqs: [] };
+  async (variables: Variables): Promise<FaqsCollection> => {
+    // Artificial delay so the streaming skeleton/loading states remain
+    // observable in the lab, just as with the original network request.
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    const { productId, locale, after } = variables;
+    const limit = variables.limit ?? DEFAULT_LIMIT;
+    const offset = decodeCursor(after);
+
+    const { faqs, hasNextPage } = queryProductFaqs({ productId, locale, limit, offset });
+
+    return {
+      endCursor: hasNextPage ? String(offset + faqs.length) : null,
+      faqs: faqs.map((faq) => ({
+        key: String(faq.id),
+        question: faq.question,
+        answer: faq.answer,
+      })),
+    };
   }
 );
 
