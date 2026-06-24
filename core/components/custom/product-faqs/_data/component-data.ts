@@ -1,106 +1,25 @@
-import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { cache } from 'react';
-import { z } from 'zod';
 
-import { client } from '~/client';
-import { FragmentOf, graphql, VariablesOf } from '~/client/graphql';
+import { Faq } from '../faqs-list';
 
-const FaqMetafieldsFragment = graphql(`
-  fragment FaqMetafieldsFragment on Product {
-    metafields(namespace: $namespace, first: $limit, after: $after) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          key
-          value
-        }
-      }
-    }
-  }
-`);
-
-const MetafieldsQuery = graphql(
-  `
-    query getProductFaqMetafields(
-      $productId: Int!, 
-      $namespace: String!,
-      $limit: Int, 
-      $after: String
-    ) {
-      site {
-        product(entityId: $productId) {
-          ...FaqMetafieldsFragment
-        }
-      }
-    }
-  `,
-  [FaqMetafieldsFragment]
-);
-
-const FaqMetafield = z.object({
-  key: z.string(),
-  question: z.string(),
-  answer: z.string(),
-});
-
-const formatFaqs = (
-  product: FragmentOf<typeof FaqMetafieldsFragment>
-) => {
-  const fields = removeEdgesAndNodes(product.metafields);
-
-  return fields
-    .map((field) => {
-      try {
-        return FaqMetafield.parse({
-          ...JSON.parse(field.value),
-          key: field.key,
-        });
-      } catch {
-        return { key: '', question: '', answer: '' };
-      }
-    })
-    .filter((field) => field.key.trim().length > 0);
+interface FaqsCollection {
+  endCursor: string | null;
+  faqs: Faq[];
 }
 
-const formatFaqsCollection = (
-  product: FragmentOf<typeof FaqMetafieldsFragment>
-) => {
-  return {
-    endCursor: product.metafields.pageInfo.hasNextPage 
-      ? product.metafields.pageInfo.endCursor 
-      : null,
-    faqs: formatFaqs(product),
-  };
-};
-
-type Variables = Omit<VariablesOf<typeof MetafieldsQuery>, 'namespace'> 
-  & { locale: string };
+interface Variables {
+  productId: number;
+  locale: string;
+  limit?: number | null;
+  after?: string | null;
+}
 
 const getProductFaqMetafields = cache(
-  async (variables: Variables) => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    const { locale, ...queryVariables } = variables;
-
-    const response = await client.fetch({
-      document: MetafieldsQuery,
-      variables: {
-        ...queryVariables,
-        namespace: `FAQ|${locale}`,
-      },
-    });
-
-    const product = response.data.site.product;
-
-    if (!product?.metafields) {
-      return { endCursor: null, faqs: [] };
-    }
-
-    return formatFaqsCollection(product);
+  async (_variables: Variables): Promise<FaqsCollection> => {
+    // TODO: Fetch the product FAQs for the given product and locale from the
+    // local SQLite database, applying cursor-based pagination.
+    return { endCursor: null, faqs: [] };
   }
 );
 
-export { formatFaqs, type Variables, getProductFaqMetafields };
+export { type FaqsCollection, type Variables, getProductFaqMetafields };
