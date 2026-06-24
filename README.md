@@ -26,7 +26,7 @@ Body:
 {
     "key": "ship-time",
     "value": "{ \"question\": \"How quickly does this product ship?\", \"answer\": \"The product ships within 2 days.\" }",
-    "namespace": "FAQ",
+    "namespace": "FAQ|en",
     "permission_set": "read_and_sf_access"
 }
 ```
