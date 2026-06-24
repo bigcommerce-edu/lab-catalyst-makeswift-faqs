@@ -42,7 +42,10 @@ const getProductFaqMetafields = cache(
     return {
       endCursor: hasNextPage ? String(offset + faqs.length) : null,
       faqs: faqs.map((faq) => ({
-        key: String(faq.id),
+        // Namespace the database id so these keys never collide with the
+        // index-based keys the Makeswift integration assigns to author-added
+        // FAQs when the two sets are merged into a single accordion.
+        key: `faq-${faq.id}`,
         question: faq.question,
         answer: faq.answer,
       })),
