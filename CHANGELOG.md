@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.0-test
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_
+
+### Summary
+
+Replaced the API-based Product FAQs implementation with a SQLite-backed data source, and added unit test coverage for the FAQs logic.
+
+### Changes
+
+- Removed the API-based product FAQ implementation in favor of a SQLite adapter (`_data/faqs-db.ts`), loading `node:sqlite` via `process.getBuiltinModule`.
+- Namespaced FAQ keys to avoid Makeswift merge collisions, with a dedicated `merge-faqs` helper.
+- Defaulted the FAQ answer to empty so new entries render the Makeswift content slot.
+- Added Vitest for component unit testing (`core/vitest.config.ts`) and extracted pure FAQ helpers to make the logic testable.
+- Added unit tests covering FAQ component data, the SQLite adapter, and FAQ merging.
+
 ## 1.0.1
 
 _Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_
