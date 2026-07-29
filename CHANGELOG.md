@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.1.1
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.10.0_
+
+### Summary
+
+Framework upgrade from Catalyst 1.7.0 to 1.10.0. No structural changes to the project layout — the repository-root scaffold introduced in 1.1.0 is unchanged. Framework-level updates (e.g. the new `ProductVideos` section on the product detail page) were reconciled against the lab's `ProductFaqs` insertion point on the same page.
+
+### Changes
+
+- Upgraded the base framework from `@bigcommerce/catalyst-makeswift@1.7.0` to `@bigcommerce/catalyst-makeswift@1.10.0`.
+- Merged the new framework `.gitignore` entry (`.bigcommerce` under "Catalyst CLI config") with the existing lab-specific block, removing the now-duplicate lab-side entry.
+- No lab dependency versions changed (`react-compare-slider` remains at the latest `4.0.0`).
+- No functional changes to lab code.
+
+## 1.1.0
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_
+
+### Summary
+
+Rebuilt the progressive history on the Catalyst CLI's scaffolding command instead of a raw GitHub clone. The project's contents now live at the repository root — the `core/` subdirectory from the prior monorepo-style layout no longer exists.
+
+### Changes
+
+- Switched the framework install command to `pnpm create @bigcommerce/catalyst@latest ...`, followed by `pnpm approve-builds --all` before the initial commit.
+- All lab-code paths (components, `AGENTS.md` framework references, etc.) shifted from `core/*` to the repository root to match the new scaffold's structure.
+- Added `*.graphql` and `*.graphql.d.ts` to `.gitignore`.
+- No functional changes to lab code — identical behavior to the prior history, aside from the path shift.
+
 ## 1.0.1
 
 _Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.7.0_

@@ -18,7 +18,7 @@ This repository maintains two kinds of history **separately**:
 ## Project Version and Changelogs
 
 - The **project version** (plain semver, separate from the Catalyst framework version) is held in `package.json`'s `version` field and tagged on the tip of the corresponding progressive history.
-- Each version has a changelog entry in `changelogs/<version>.md`.
+- Each version has a changelog entry in `CHANGELOG.md`.
 - **Metadata at the end**: the project-version bump and the addition of changelog entries and tutorial docs are folded into the final commit(s) of each rebuilt progressive history (amended on each rebuild rather than accumulating new commits).
 - The lab steps and GitHub diff links live in `docs/TUTORIAL.md`, which carries a "Based on version X" banner matching the latest progressive history.
 
@@ -105,10 +105,14 @@ When creating a clean orphan branch, the following additional file paths should 
 
 ## Framework Install Command
 
-The base framework is Catalyst. Clone Catalyst from GitHub:
+The base framework is Catalyst. Scaffold it with the Catalyst CLI:
 
 ```
-git clone git@github.com:bigcommerce/catalyst.git --branch @bigcommerce/catalyst-makeswift@<version>
+pnpm create @bigcommerce/catalyst@latest --store-hash "--" --channel-id 1 --storefront-token "--" --access-token "--" --gh-ref @bigcommerce/catalyst-makeswift@<version> --project-name=<tmp-directory>
 ```
 
-After re-installing the framework, make sure an appropriate version of Node.js is installed according to `.nvmrc` and use `pnpm install` to install dependencies.
+Where `<version>` is the version the user specified and `<tmp-directory>` is the temporary directory where you are doing the installation.
+
+Because the command provisions its own `.env.local`, back up any pre-existing `.env.local` before running it and restore it afterward — the CLI's generated version should be discarded.
+
+After the main install command completes, run `pnpm approve-builds --all` before making the initial commit. An explicit `pnpm install` is not needed; the install command handles it.
