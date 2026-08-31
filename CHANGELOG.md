@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.2
+
+_Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.11.0_
+
+### Summary
+
+Framework upgrade from Catalyst 1.10.0 to 1.11.0. No structural changes to the project layout and no changes to lab code — the upgrade replayed cleanly across every lab step.
+
+### Changes
+
+- Upgraded the base framework from `@bigcommerce/catalyst-makeswift@1.10.0` to `@bigcommerce/catalyst-makeswift@1.11.0`.
+- Merged the new framework `.gitignore` comment about `bigcommerce.graphql` and `bigcommerce-graphql.d.ts` with the existing lab-specific block.
+- No lab dependency versions changed (`react-compare-slider` remains at the latest `4.0.0`).
+- No functional changes to lab code.
+
 ## 1.1.1
 
 _Based on Catalyst (`@bigcommerce/catalyst-makeswift`) 1.10.0_
